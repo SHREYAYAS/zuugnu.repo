@@ -1,6 +1,6 @@
 'use client';
 
-// Login page component with Register and Sign In tabs
+// Login page component with Register and Sign In tabs - v2
 import { useState } from 'react';
 import Link from 'next/link';
 
