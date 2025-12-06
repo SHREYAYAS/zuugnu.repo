@@ -1,0 +1,54 @@
+import Image from 'next/image';
+
+export default function Testimonials() {
+  const testimonials = [
+    {
+      text: 'Zuugnu changed my freelancing game! The pre-paid gigs and escrow system gave me the security I needed to focus on my work.',
+      author: 'Priya Sharma',
+      role: 'Content Creator',
+      avatar: 'https://ui-avatars.com/api/?name=PS&background=6366f1&color=fff&bold=true',
+    },
+    {
+      text: "The bidding feature helped me land high-paying projects. Zuugnu's training programs also upskilled me in social media analytics!",
+      author: 'Rahul Patel',
+      role: 'Digital Marketer',
+      avatar: 'https://ui-avatars.com/api/?name=RP&background=8b5cf6&color=fff&bold=true',
+    },
+    {
+      text: "As a small business owner, Zuugnu's UGC services helped me build my brand authentically and affordably.",
+      author: 'Ananya Gupta',
+      role: 'E-commerce Entrepreneur',
+      avatar: 'https://ui-avatars.com/api/?name=AG&background=ec4899&color=fff&bold=true',
+    },
+  ];
+
+  return (
+    <section className="py-20 bg-gray-50" id="testimonials">
+      <div className="container mx-auto max-w-6xl px-5">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900">What Our Community Says</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {testimonials.map((testimonial, index) => (
+            <div key={index} className="bg-white rounded-lg p-8 shadow-md">
+              <p className="italic text-gray-600 mb-6">"{testimonial.text}"</p>
+              <div className="flex items-center gap-4">
+                <Image
+                  src={testimonial.avatar}
+                  alt={testimonial.author}
+                  width={50}
+                  height={50}
+                  className="w-12 h-12 rounded-full"
+                />
+                <div>
+                  <h4 className="font-semibold text-gray-900">{testimonial.author}</h4>
+                  <p className="text-gray-600 text-sm">{testimonial.role}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
