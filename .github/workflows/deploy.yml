@@ -22,6 +22,8 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
             echo "Starting deployment..."
+            git fetch origin
+            git checkout main
             git pull origin main
             echo "Installing dependencies..."
             npm install
