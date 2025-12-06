@@ -22,11 +22,11 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
             echo "Starting deployment..."
-            git fetch origin
-            git checkout main
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
             echo "Installing dependencies..."
-            npm install
+            npm install --legacy-peer-deps
             echo "Building project..."
             npm run build
-            echo "Deployment complete!"
+            echo "Build complete!"
+            echo "Deployment successful! $(date)"
