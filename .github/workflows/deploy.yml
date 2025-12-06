@@ -1,0 +1,30 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to server via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            echo "Starting deployment..."
+            git pull origin main
+            echo "Installing dependencies..."
+            npm install
+            echo "Building project..."
+            npm run build
+            echo "Deployment complete!"
