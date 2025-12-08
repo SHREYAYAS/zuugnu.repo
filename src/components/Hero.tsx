@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Hero() {
   return (
-    <section className="pt-40 pb-24 bg-gradient-to-b from-gray-100 to-gray-200 text-center">
+    <section className="pt-16 pb-24 bg-gradient-to-b from-gray-100 to-gray-200 text-center">
       <div className="container mx-auto max-w-6xl px-5">
         <h1 className="text-5xl font-bold text-gray-900 mb-5">Empower Your Gig Journey with Zuugnu</h1>
         <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
@@ -12,7 +12,7 @@ export default function Hero() {
         </p>
         <div className="flex gap-5 justify-center mb-12 flex-col sm:flex-row">
           <Link
-            href="#signup"
+            href="/login"
             className="bg-indigo-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-indigo-700 transition-colors"
           >
             Get Started
