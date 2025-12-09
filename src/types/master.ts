@@ -5,6 +5,7 @@ export interface MasterTable {
   name: string;
   displayName: string;
   icon: string;
+  category?: string;
   columns: Column[];
 }
 
@@ -34,6 +35,7 @@ export const MAST_COUNTRY: MasterTable = {
   name: 'mast_country',
   displayName: 'Master > Country',
   icon: '🌍',
+  category: 'Geographic Data',
   columns: [
     { key: 'country_code', label: 'Country Code', type: 'text', required: true, placeholder: '2 chars' },
     { key: 'country', label: 'Country', type: 'text', required: true },
@@ -49,7 +51,8 @@ export const MAST_REGION: MasterTable = {
   id: 'mast_region',
   name: 'mast_region',
   displayName: 'Master > Region',
-  icon: '📍',
+  icon: '🗺️',
+  category: 'Geographic Data',
   columns: [
     { key: 'country_code', label: 'Country', type: 'select', required: true },
     { key: 'region_code', label: 'Region Code', type: 'text', required: true },
@@ -64,6 +67,7 @@ export const MAST_STATE: MasterTable = {
   name: 'mast_state',
   displayName: 'Master > State',
   icon: '📌',
+  category: 'Geographic Data',
   columns: [
     { key: 'country_code', label: 'Country', type: 'select', required: true },
     { key: 'region', label: 'Region', type: 'select', required: true },
@@ -78,7 +82,8 @@ export const MAST_DISTRICT: MasterTable = {
   id: 'mast_district',
   name: 'mast_district',
   displayName: 'Master > District',
-  icon: '🗺️',
+  icon: '🎯',
+  category: 'Geographic Data',
   columns: [
     { key: 'country_code', label: 'Country Code', type: 'text', required: true },
     { key: 'state_code', label: 'State Code', type: 'text', required: true },
@@ -92,7 +97,8 @@ export const MAST_TASK: MasterTable = {
   id: 'mast_task',
   name: 'mast_task',
   displayName: 'Master > Task',
-  icon: '✓',
+  icon: '📋',
+  category: 'Master Data',
   columns: [
     { key: 'task', label: 'Task', type: 'text', required: true },
     { key: 'euser', label: 'User', type: 'number', required: true },
@@ -105,6 +111,7 @@ export const MAST_ABILITY: MasterTable = {
   name: 'mast_ability',
   displayName: 'Master > Ability',
   icon: '💪',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -116,6 +123,7 @@ export const MAST_ACTIVITY: MasterTable = {
   name: 'mast_activity',
   displayName: 'Master > Activity',
   icon: '⚡',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -127,6 +135,7 @@ export const MAST_APTITUDE: MasterTable = {
   name: 'mast_aptitude',
   displayName: 'Master > Aptitude',
   icon: '🧠',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
     { key: 'aptid', label: 'Aptitude ID', type: 'text' },
@@ -139,6 +148,7 @@ export const MAST_ATTITUDE: MasterTable = {
   name: 'mast_attitude',
   displayName: 'Master > Attitude',
   icon: '😊',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
     { key: 'attid', label: 'Attitude ID', type: 'text' },
@@ -151,6 +161,7 @@ export const MAST_CAREER_CHOICE: MasterTable = {
   name: 'mast_career_choice',
   displayName: 'Master > Career Choice',
   icon: '🎯',
+  category: 'Master Data',
   columns: [
     { key: 'career_choice', label: 'Career Choice', type: 'text', required: true },
     { key: 'career_mast', label: 'Career Master', type: 'text' },
@@ -163,6 +174,7 @@ export const MAST_CONTACT: MasterTable = {
   name: 'mast_contact',
   displayName: 'Master > Contact',
   icon: '📞',
+  category: 'Master Data',
   columns: [
     { key: 'contact', label: 'Contact', type: 'text', required: true },
     { key: 'contact_type', label: 'Contact Type', type: 'text', required: true },
@@ -175,6 +187,7 @@ export const MAST_DATA: MasterTable = {
   name: 'mast_data',
   displayName: 'Master > Data',
   icon: '💾',
+  category: 'Master Data',
   columns: [
     { key: 'datatype', label: 'Data Type', type: 'text', required: true },
     { key: 'data', label: 'Data', type: 'text', required: true },
@@ -187,6 +200,7 @@ export const MAST_INDUSTRY: MasterTable = {
   name: 'mast_industry',
   displayName: 'Master > Industry',
   icon: '🏭',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -198,6 +212,7 @@ export const MAST_KNOWLEDGE: MasterTable = {
   name: 'mast_knowledge',
   displayName: 'Master > Knowledge',
   icon: '📚',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -209,6 +224,7 @@ export const MAST_LANGUAGE: MasterTable = {
   name: 'mast_language',
   displayName: 'Master > Language',
   icon: '🌐',
+  category: 'Master Data',
   columns: [
     { key: 'language', label: 'Language', type: 'text', required: true },
   ],
@@ -219,7 +235,8 @@ export const MAST_LEADTYPE: MasterTable = {
   id: 'mast_leadtype',
   name: 'mast_leadtype',
   displayName: 'Master > Lead Type',
-  icon: '🎁',
+  icon: '🔥',
+  category: 'Master Data',
   columns: [
     { key: 'leadtype', label: 'Lead Type', type: 'text', required: true },
     { key: 'color', label: 'Color', type: 'text' },
@@ -232,7 +249,8 @@ export const MAST_OUTLOOK: MasterTable = {
   id: 'mast_outlook',
   name: 'mast_outlook',
   displayName: 'Master > Outlook',
-  icon: '👁️',
+  icon: '🔮',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -244,6 +262,7 @@ export const MAST_PATHWAY: MasterTable = {
   name: 'mast_pathway',
   displayName: 'Master > Pathway',
   icon: '🛤️',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -255,6 +274,7 @@ export const MAST_PINCODE: MasterTable = {
   name: 'mast_pincode',
   displayName: 'Master > Pin Code',
   icon: '📮',
+  category: 'Geographic Data',
   columns: [
     { key: 'pincode', label: 'Pin Code', type: 'text', required: true },
     { key: 'postoffice', label: 'Post Office', type: 'text' },
@@ -270,7 +290,8 @@ export const MAST_PLACE: MasterTable = {
   id: 'mast_place',
   name: 'mast_place',
   displayName: 'Master > Place',
-  icon: '🏢',
+  icon: '📍',
+  category: 'Geographic Data',
   columns: [
     { key: 'country_code', label: 'Country', type: 'select', required: true },
     { key: 'stateid', label: 'State ID', type: 'number' },
@@ -286,7 +307,8 @@ export const MAST_PREFERENCE: MasterTable = {
   id: 'mast_preference',
   name: 'mast_preference',
   displayName: 'Master > Preference',
-  icon: '❤️',
+  icon: '⭐',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -297,7 +319,8 @@ export const MAST_SECTOR: MasterTable = {
   id: 'mast_sector',
   name: 'mast_sector',
   displayName: 'Master > Sector',
-  icon: '📈',
+  icon: '📊',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -308,7 +331,8 @@ export const MAST_SKILLS: MasterTable = {
   id: 'mast_skills',
   name: 'mast_skills',
   displayName: 'Master > Skills',
-  icon: '🎓',
+  icon: '✓',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -319,7 +343,8 @@ export const MAST_STATUS: MasterTable = {
   id: 'mast_status',
   name: 'mast_status',
   displayName: 'Master > Status',
-  icon: '🔔',
+  icon: '📋',
+  category: 'Master Data',
   columns: [
     { key: 'status', label: 'Status', type: 'text', required: true },
   ],
@@ -331,6 +356,7 @@ export const MAST_STEM: MasterTable = {
   name: 'mast_stem',
   displayName: 'Master > STEM',
   icon: '🔬',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -342,6 +368,7 @@ export const MAST_TECHNOLOGY: MasterTable = {
   name: 'mast_technology',
   displayName: 'Master > Technology',
   icon: '💻',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -353,6 +380,7 @@ export const MAST_TOOLS: MasterTable = {
   name: 'mast_tools',
   displayName: 'Master > Tools',
   icon: '🔧',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -363,7 +391,8 @@ export const MAST_TRAIT: MasterTable = {
   id: 'mast_trait',
   name: 'mast_trait',
   displayName: 'Master > Trait',
-  icon: '⭐',
+  icon: '😊',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -374,7 +403,8 @@ export const MAST_ZONE: MasterTable = {
   id: 'mast_zone',
   name: 'mast_zone',
   displayName: 'Master > Zone',
-  icon: '🎪',
+  icon: '🌐',
+  category: 'Master Data',
   columns: [
     { key: 'option', label: 'Option', type: 'text', required: true },
   ],
@@ -385,7 +415,8 @@ export const MAST_USER: MasterTable = {
   id: 'mast_user',
   name: 'mast_user',
   displayName: 'Master > User',
-  icon: '👤',
+  icon: '👥',
+  category: 'User Management',
   columns: [
     { key: 'whatsapp', label: 'WhatsApp', type: 'phone' },
     { key: 'name', label: 'Name', type: 'text', required: true },
@@ -395,15 +426,25 @@ export const MAST_USER: MasterTable = {
     { key: 'mobile', label: 'Mobile', type: 'phone', required: true },
     { key: 'email', label: 'Email', type: 'email', required: true },
     { key: 'pic_url', label: 'Picture URL', type: 'text' },
-    { key: 'gender', label: 'Gender', type: 'select' },
+    { key: 'gender', label: 'Gender', type: 'select', options: [
+      { value: 'M', label: 'Male' },
+      { value: 'F', label: 'Female' },
+      { value: 'O', label: 'Other' }
+    ]},
     { key: 'dob', label: 'Date of Birth', type: 'date' },
     { key: 'langid', label: 'Language', type: 'select' },
     { key: 'refercode', label: 'Referral Code', type: 'text' },
     { key: 'referby', label: 'Referred By', type: 'number' },
     { key: 'advisor', label: 'Advisor', type: 'number' },
-    { key: 'active', label: 'Active', type: 'select' },
+    { key: 'active', label: 'Active', type: 'select', options: [
+      { value: '1', label: 'Yes' },
+      { value: '0', label: 'No' }
+    ]},
     { key: 'deactive', label: 'Deactive Reason', type: 'text' },
-    { key: 'deleted', label: 'Deleted', type: 'select' },
+    { key: 'deleted', label: 'Deleted', type: 'select', options: [
+      { value: '0', label: 'No' },
+      { value: '1', label: 'Yes' }
+    ]},
   ],
 };
 
@@ -412,7 +453,8 @@ export const MAST_USER_TEMPLATE: MasterTable = {
   id: 'mast_user_template',
   name: 'mast_user_template',
   displayName: 'Master > User Template',
-  icon: '📋',
+  icon: '📄',
+  category: 'User Management',
   columns: [
     { key: 'temptype', label: 'Template Type', type: 'text', required: true },
     { key: 'template', label: 'Template', type: 'text', required: true },

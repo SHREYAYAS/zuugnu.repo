@@ -294,27 +294,32 @@ export function CareerCategoryContent({ categoryId }: CareerCategoryContentProps
       </div>
 
       <div className="max-w-5xl mx-auto px-6 py-12">
-        {/* Hero Section - Minimalist */}
-        <div className="mb-12">
-          <div className="flex items-start gap-6 mb-8">
-            <div className="text-5xl flex-shrink-0">{category.icon}</div>
-            <div>
-              <h1 className="text-4xl font-light text-gray-900 mb-3">{category.name}</h1>
-              <p className="text-gray-600 text-base leading-relaxed max-w-2xl">{category.fullDescription}</p>
+        {/* Hero Section - Beautiful & Elegant */}
+        <div className={`mb-8 relative`}>
+          <div className={`absolute inset-0 w-full h-full rounded-2xl bg-gradient-to-br ${category.color} opacity-20 blur-md z-0`} />
+          <div className="relative z-10 flex items-center gap-6 mb-6 p-5 sm:p-6 rounded-2xl shadow-lg backdrop-blur-md bg-white/80 border border-gray-100">
+            <div className="flex-shrink-0">
+              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/50 shadow-md">
+                <span className="text-4xl drop-shadow-md">{category.icon}</span>
+              </div>
+            </div>
+            <div className="flex-1">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 tracking-tight drop-shadow">{category.name}</h1>
+              <p className="text-base text-gray-700 leading-relaxed max-w-2xl font-normal drop-shadow-sm">{category.fullDescription}</p>
             </div>
           </div>
         </div>
 
         {/* Tabs Navigation - Clean */}
-        <div className="flex gap-6 mb-10 border-b border-gray-200">
+        <div className="flex gap-6 mb-8 border-b border-gray-200">
           {['overview', 'skills', 'occupations', 'pathways'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`pb-3 text-sm font-medium transition-colors border-b-2 ${
+              className={`pb-3 text-sm font-semibold transition-all border-b-2 rounded-t-lg px-2 sm:px-4 ${
                 activeTab === tab
-                  ? 'text-gray-900 border-gray-900'
-                  : 'text-gray-500 hover:text-gray-700 border-transparent'
+                  ? `text-indigo-700 border-indigo-400 bg-indigo-50 shadow-sm`
+                  : 'text-gray-500 hover:text-indigo-600 border-transparent hover:bg-gray-50'
               }`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -329,9 +334,9 @@ export function CareerCategoryContent({ categoryId }: CareerCategoryContentProps
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {category.keyPoints.map((point, idx) => (
-                  <div key={idx} className="flex gap-4">
-                    <span className="text-gray-400 flex-shrink-0 font-light">•</span>
-                    <p className="text-gray-700 text-sm">{point}</p>
+                  <div key={idx} className={`flex gap-4 items-center bg-gradient-to-r ${category.color} bg-opacity-10 rounded-xl p-4 shadow-sm transition-all hover:scale-[1.03]`}>
+                    <span className="text-indigo-300 text-lg font-bold">•</span>
+                    <p className="text-gray-800 text-base font-medium">{point}</p>
                   </div>
                 ))}
               </div>
@@ -345,10 +350,10 @@ export function CareerCategoryContent({ categoryId }: CareerCategoryContentProps
                 {category.skills.map((skill, idx) => (
                   <div
                     key={idx}
-                    className="p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition"
+                    className={`p-4 rounded-xl shadow-sm bg-gradient-to-r ${category.color} bg-opacity-10 border border-indigo-100 hover:scale-[1.03] transition-all`}
                   >
-                    <p className="font-medium text-gray-900 text-sm">{skill}</p>
-                    <p className="text-gray-500 text-xs mt-1">
+                    <p className="font-semibold text-indigo-700 text-base">{skill}</p>
+                    <p className="text-gray-600 text-xs mt-1">
                       Key competency in this field
                     </p>
                   </div>
@@ -363,10 +368,10 @@ export function CareerCategoryContent({ categoryId }: CareerCategoryContentProps
               {category.relatedOccupations.map((occupation, idx) => (
                 <div
                   key={idx}
-                  className="p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition"
+                  className={`p-4 rounded-xl shadow-sm bg-gradient-to-r ${category.color} bg-opacity-10 border border-indigo-100 hover:scale-[1.03] transition-all`}
                 >
-                  <p className="font-medium text-gray-900 text-sm">{occupation}</p>
-                  <p className="text-gray-500 text-xs mt-1">Related occupation</p>
+                  <p className="font-semibold text-indigo-700 text-base">{occupation}</p>
+                  <p className="text-gray-600 text-xs mt-1">Related occupation</p>
                 </div>
               ))}
             </div>
@@ -378,10 +383,10 @@ export function CareerCategoryContent({ categoryId }: CareerCategoryContentProps
               {category.pathways.map((pathway, idx) => (
                 <div
                   key={idx}
-                  className="p-4 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition"
+                  className={`p-4 rounded-xl shadow-sm bg-gradient-to-r ${category.color} bg-opacity-10 border border-indigo-100 hover:scale-[1.03] transition-all`}
                 >
-                  <p className="font-medium text-gray-900 text-sm">{pathway}</p>
-                  <p className="text-gray-500 text-xs mt-1">
+                  <p className="font-semibold text-indigo-700 text-base">{pathway}</p>
+                  <p className="text-gray-600 text-xs mt-1">
                     Recommended approach for {category.name.toLowerCase()}
                   </p>
                 </div>

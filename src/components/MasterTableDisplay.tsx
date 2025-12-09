@@ -25,6 +25,17 @@ export const MasterTableDisplay: React.FC<MasterTableDisplayProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  // Build select options from data
+  const getSelectOptions = (fieldKey: string) => {
+    const uniqueValues = Array.from(
+      new Set(data.map((row) => row[fieldKey]).filter(Boolean))
+    );
+    return uniqueValues.map((val) => ({
+      value: String(val),
+      label: String(val),
+    }));
+  };
+
   const filteredData = useMemo(() => {
     return data.filter((row) =>
       Object.values(row).some((val) =>
@@ -94,6 +105,11 @@ export const MasterTableDisplay: React.FC<MasterTableDisplayProps> = ({
             onSubmit={handleSubmit}
             onCancel={handleCancel}
             editingRow={editingRow}
+            selectOptions={Object.fromEntries(
+              table.columns
+                .filter((col) => col.type === 'select' && !col.options)
+                .map((col) => [col.key, getSelectOptions(col.key)])
+            )}
           />
         </div>
       )}
@@ -116,17 +132,36 @@ export const MasterTableDisplay: React.FC<MasterTableDisplayProps> = ({
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto bg-white rounded-lg border border-gray-200 shadow">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-200">
+      <div className="overflow-x-auto bg-white rounded-lg border border-gray-200 shadow scrollbar-show">
+        <style>{`
+          .scrollbar-show {
+            scrollbar-width: thin;
+            scrollbar-color: #6366f1 #f3f4f6;
+          }
+          .scrollbar-show::-webkit-scrollbar {
+            height: 8px;
+          }
+          .scrollbar-show::-webkit-scrollbar-track {
+            background: #f3f4f6;
+          }
+          .scrollbar-show::-webkit-scrollbar-thumb {
+            background: #6366f1;
+            border-radius: 4px;
+          }
+          .scrollbar-show::-webkit-scrollbar-thumb:hover {
+            background: #4f46e5;
+          }
+        `}</style>
+        <table className="w-full text-sm border-collapse">
+          <thead className="bg-gray-50 border-b border-gray-200 sticky top-0">
             <tr>
-              <th className="px-4 py-3 text-left font-semibold text-gray-700">
+              <th className="px-4 py-3 text-left font-semibold text-gray-700 whitespace-nowrap">
                 Action
               </th>
               {table.columns.map((col) => (
                 <th
                   key={col.key}
-                  className="px-4 py-3 text-left font-semibold text-gray-700"
+                  className="px-4 py-3 text-left font-semibold text-gray-700 whitespace-nowrap"
                 >
                   {col.label}
                 </th>
@@ -140,7 +175,7 @@ export const MasterTableDisplay: React.FC<MasterTableDisplayProps> = ({
                   key={row.id || idx}
                   className="border-b border-gray-200 hover:bg-gray-50 transition"
                 >
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3 text-gray-700 whitespace-nowrap">
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleEdit(row)}
@@ -159,7 +194,7 @@ export const MasterTableDisplay: React.FC<MasterTableDisplayProps> = ({
                     </div>
                   </td>
                   {table.columns.map((col) => (
-                    <td key={col.key} className="px-4 py-3 text-gray-700">
+                    <td key={col.key} className="px-4 py-3 text-gray-700 whitespace-nowrap">
                       {String(row[col.key] || '-').substring(0, 50)}
                     </td>
                   ))}
@@ -171,7 +206,7 @@ export const MasterTableDisplay: React.FC<MasterTableDisplayProps> = ({
                   colSpan={table.columns.length + 1}
                   className="px-4 py-8 text-center text-gray-500"
                 >
-                  No records found
+                  No records found. Click "Add Data" to create your first record.
                 </td>
               </tr>
             )}

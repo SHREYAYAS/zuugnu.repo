@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { MASTER_TABLES_LIST, MasterTable, TableRow } from '@/types/master';
 import { MasterTableDisplay } from './MasterTableDisplay';
 
@@ -14,11 +14,40 @@ export const MasterTableModal: React.FC<MasterTableModalProps> = ({
   onClose,
 }) => {
   const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
-  const [tableData, setTableData] = useState<{ [key: string]: TableRow[] }>({});
+  const [tableData, setTableData] = useState<{ [key: string]: TableRow[] }>({
+    // Add sample data for testing
+    mast_country: [
+      { id: 1, name: 'India', code: 'IN', region: 'Asia' },
+      { id: 2, name: 'United States', code: 'US', region: 'North America' },
+      { id: 3, name: 'United Kingdom', code: 'UK', region: 'Europe' },
+      { id: 4, name: 'Canada', code: 'CA', region: 'North America' },
+      { id: 5, name: 'Australia', code: 'AU', region: 'Oceania' },
+      { id: 6, name: 'Japan', code: 'JP', region: 'Asia' },
+      { id: 7, name: 'Germany', code: 'DE', region: 'Europe' },
+      { id: 8, name: 'France', code: 'FR', region: 'Europe' },
+      { id: 9, name: 'Brazil', code: 'BR', region: 'South America' },
+      { id: 10, name: 'Mexico', code: 'MX', region: 'North America' },
+      { id: 11, name: 'Singapore', code: 'SG', region: 'Asia' },
+      { id: 12, name: 'South Korea', code: 'KR', region: 'Asia' },
+    ],
+  });
 
   const selectedTable = MASTER_TABLES_LIST.find(
     (t) => t.id === selectedTableId
   );
+
+  // Group tables by category
+  const tablesByCategory = useMemo(() => {
+    const grouped: { [key: string]: MasterTable[] } = {};
+    MASTER_TABLES_LIST.forEach((table) => {
+      const category = (table as any).category || 'Other';
+      if (!grouped[category]) {
+        grouped[category] = [];
+      }
+      grouped[category].push(table);
+    });
+    return grouped;
+  }, []);
 
   const handleTableSelect = (tableId: string) => {
     setSelectedTableId(tableId);
@@ -40,7 +69,6 @@ export const MasterTableModal: React.FC<MasterTableModalProps> = ({
         ...prev,
         [selectedTableId]: [...(prev[selectedTableId] || []), newRow],
       }));
-      // Here you would typically send data to backend
       console.log('Added row:', newRow);
     }
   };
@@ -72,64 +100,83 @@ export const MasterTableModal: React.FC<MasterTableModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
+    <div className="fixed inset-0 bg-white z-50 flex flex-col overflow-hidden">
+      <div className="bg-white w-full flex-1 flex flex-col min-h-0">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-indigo-50 to-purple-50">
-          <h1 className="text-2xl font-bold text-gray-800">Master Data Management</h1>
+        <div className="flex items-center justify-between p-6 sm:p-8 border-b border-gray-100 bg-white sticky top-0 z-40">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3">
+              <span className="text-3xl sm:text-4xl">📊</span>
+              Master Tables
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">Centralized data management</p>
+          </div>
           <button
             onClick={onClose}
-            className="text-2xl text-gray-600 hover:text-gray-800 transition"
+            className="text-2xl text-gray-400 hover:text-gray-600 transition p-2"
           >
             ✕
           </button>
         </div>
 
-        <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar - Table List */}
-          <div className="w-80 bg-gray-50 border-r border-gray-200 overflow-y-auto">
-            <div className="p-4 sticky top-0 bg-white border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-800">📋 Tables</h2>
-            </div>
-            <div className="space-y-1 p-2">
-              {MASTER_TABLES_LIST.map((table) => (
-                <button
-                  key={table.id}
-                  onClick={() => handleTableSelect(table.id)}
-                  className={`w-full text-left px-4 py-3 rounded-lg transition font-medium flex items-center gap-2 ${
-                    selectedTableId === table.id
-                      ? 'bg-indigo-600 text-white shadow-md'
-                      : 'text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  <span className="text-xl">{table.icon}</span>
-                  <span className="truncate">{table.displayName}</span>
-                </button>
-              ))}
-            </div>
+        {selectedTable && selectedTableId ? (
+          // Table Detail View
+          <div className="flex-1 min-h-0 overflow-y-auto p-6 sm:p-8" style={{ scrollbarWidth: 'thin', scrollbarColor: '#d1d5db #f3f4f6' }}>
+            <button
+              onClick={() => setSelectedTableId(null)}
+              className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 mb-6 font-medium text-sm"
+            >
+              ← Back to Master Tables
+            </button>
+            <MasterTableDisplay
+              table={selectedTable}
+              data={tableData[selectedTableId] || []}
+              onAdd={handleAddRow}
+              onEdit={handleEditRow}
+              onDelete={handleDeleteRow}
+            />
           </div>
-
-          {/* Main Content Area */}
-          <div className="flex-1 overflow-y-auto p-6 bg-white">
-            {selectedTable && selectedTableId ? (
-              <MasterTableDisplay
-                table={selectedTable}
-                data={tableData[selectedTableId] || []}
-                onAdd={handleAddRow}
-                onEdit={handleEditRow}
-                onDelete={handleDeleteRow}
-              />
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full text-gray-500">
-                <div className="text-6xl mb-4">👈</div>
-                <p className="text-xl font-semibold">
-                  Select a table from the list to get started
-                </p>
-                <p className="text-sm mt-2">
-                  Total {MASTER_TABLES_LIST.length} master tables available
-                </p>
+        ) : (
+          // Grid View
+          <div className="flex-1 min-h-0 overflow-y-auto p-6 sm:p-8" style={{ scrollbarWidth: 'thin', scrollbarColor: '#d1d5db #f3f4f6' }}>
+            {Object.entries(tablesByCategory).map(([category, tables]) => (
+              <div key={category} className="mb-12">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-6">{category}</h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
+                  {tables.map((table) => (
+                    <button
+                      key={table.id}
+                      onClick={() => handleTableSelect(table.id)}
+                      className="flex flex-col items-center p-4 sm:p-6 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md hover:bg-gray-50 transition-all group"
+                    >
+                      <div className="text-4xl sm:text-5xl mb-3 group-hover:scale-110 transition-transform">
+                        {table.icon}
+                      </div>
+                      <h3 className="font-semibold text-gray-900 text-xs sm:text-sm text-center">
+                        {table.displayName.split('>')[1]?.trim() || table.displayName}
+                      </h3>
+                      <p className="text-xs text-gray-500 mt-1 text-center truncate w-full">
+                        {table.id}
+                      </p>
+                    </button>
+                  ))}
+                </div>
               </div>
-            )}
+            ))}
+          </div>
+        )}
+
+        {/* Footer Stats */}
+        <div className="border-t border-gray-100 p-6 bg-gray-50 flex items-center justify-between">
+          <div className="flex gap-8">
+            <div>
+              <p className="text-2xl font-bold text-gray-900">{MASTER_TABLES_LIST.length}</p>
+              <p className="text-sm text-gray-600">Tables</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-green-600">{Object.keys(tablesByCategory).length}</p>
+              <p className="text-sm text-gray-600">Categories</p>
+            </div>
           </div>
         </div>
       </div>

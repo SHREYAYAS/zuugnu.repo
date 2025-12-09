@@ -66,7 +66,7 @@ export const MasterTableForm: React.FC<MasterTableFormProps> = ({
               }`}
             >
               <option value="">Select {col.label}</option>
-              {(selectOptions[col.key] || col.options || []).map((opt) => (
+              {(col.options || selectOptions[col.key] || []).map((opt) => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
                 </option>

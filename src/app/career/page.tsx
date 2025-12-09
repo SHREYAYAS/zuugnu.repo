@@ -5,7 +5,7 @@ import { CareerExplorer } from '@/components/CareerExplorer';
 
 export default function CareerPage() {
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-white flex flex-col items-center justify-start relative pb-16">
       {/* Back to Home Button */}
       <Link
         href="/"
@@ -15,7 +15,26 @@ export default function CareerPage() {
         <span className="hidden sm:inline">🏠 Home</span>
       </Link>
 
-      <CareerExplorer />
+      {/* Elegant Header Section */}
+      <header className="w-full max-w-3xl mx-auto text-center mt-24 mb-10 px-4">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-indigo-700 drop-shadow-lg mb-4 animate-fade-in">
+          Explore Careers
+        </h1>
+        <p className="text-lg sm:text-xl text-gray-600 font-medium mb-2 animate-fade-in delay-100">
+          Discover your path, unlock your potential.
+        </p>
+        <div className="w-24 h-1 mx-auto bg-gradient-to-r from-purple-400 via-indigo-400 to-purple-400 rounded-full mb-2 animate-fade-in delay-200" />
+      </header>
+
+      {/* Main Content */}
+      <main className="w-full max-w-4xl mx-auto px-4">
+        <div className="bg-white bg-opacity-80 rounded-2xl shadow-xl p-6 sm:p-10 mb-8 border border-indigo-100 animate-fade-in delay-300">
+          <CareerExplorer />
+        </div>
+      </main>
+
+      {/* Subtle Decorative Particles (optional, if you have a ParticlesWavesBackground component) */}
+      {/* <ParticlesWavesBackground /> */}
     </div>
   );
 }

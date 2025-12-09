@@ -231,15 +231,15 @@ export const CareerExplorer: React.FC = () => {
               <Link
                 key={category.id}
                 href={`/career/category/${category.id}`}
-                className="group p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all cursor-pointer"
+                className={`group relative p-4 rounded-2xl border-2 border-transparent shadow-xl transition-all cursor-pointer bg-gradient-to-br ${category.color} hover:scale-105 hover:rotate-[-2deg] hover:shadow-2xl hover:border-[3px] hover:border-indigo-300 before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br before:from-white/40 before:to-white/10 before:backdrop-blur-md before:z-0`}
+                style={{ overflow: 'hidden' }}
               >
-                <div className="flex flex-col gap-3">
-                  <div className="text-4xl">{category.icon}</div>
-                  <div>
-                    <h3 className="font-medium text-gray-900 text-sm">{category.name}</h3>
-                    <p className="text-xs text-gray-500 mt-1">{category.description}</p>
-                  </div>
+                <div className="relative z-10 flex flex-col gap-4 items-center justify-center text-white">
+                  <div className="text-5xl mb-2 drop-shadow-xl scale-110 group-hover:scale-125 transition-transform duration-300">{category.icon}</div>
+                  <h3 className="font-extrabold text-lg mb-1 tracking-tight drop-shadow-md text-center group-hover:text-yellow-100 transition-colors duration-300">{category.name}</h3>
+                  <p className="text-xs text-white/90 text-center font-medium drop-shadow-sm group-hover:text-white transition-colors duration-300">{category.description}</p>
                 </div>
+                <span className="absolute -inset-1 rounded-2xl pointer-events-none border-2 border-transparent group-hover:border-[3px] group-hover:border-yellow-300 animate-pulse" />
               </Link>
             ))}
           </div>

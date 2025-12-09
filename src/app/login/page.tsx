@@ -94,24 +94,37 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 flex items-center justify-center px-4 py-12">
-      {/* Career Options Button - Top Right */}
-      <Link
-        href="/career"
-        className="absolute top-6 right-20 flex items-center gap-2 bg-white bg-opacity-80 backdrop-blur-sm hover:bg-opacity-100 text-purple-600 hover:text-purple-700 font-bold px-4 py-2 rounded-full shadow-md transition-all transform hover:scale-105 border-2 border-purple-300 hover:border-purple-500"
-        title="Career Explorer"
-      >
-        <span className="text-xl">🚀</span>
-        <span className="hidden sm:inline">Career</span>
-      </Link>
+      {/* Top Navigation Bar - Career & Master Table Buttons */}
+      <div className="absolute top-6 right-6 flex items-center gap-4">
+        {/* Master Table Button */}
+        <button
+          onClick={() => setShowMasterTable(true)}
+          className="group flex items-center gap-3 bg-white hover:bg-purple-50 text-gray-900 px-5 py-2.5 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105 border border-gray-200 hover:border-purple-300"
+          title="Master Table Management"
+        >
+          <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg text-white">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 10h16M4 14h16M4 18h16" />
+          </svg>
+        </div>
+        <span className="hidden sm:inline font-semibold text-sm">Master Data</span>
+        </button>
 
-      {/* Master Table Button - Top Right */}
-      <button
-        onClick={() => setShowMasterTable(true)}
-        className="absolute top-6 right-6 flex items-center justify-center w-14 h-14 bg-white bg-opacity-80 backdrop-blur-sm hover:bg-opacity-100 text-indigo-600 hover:text-indigo-700 font-bold rounded-full shadow-md transition-all transform hover:scale-110 border-2 border-indigo-300 hover:border-indigo-500"
-        title="Master Table Management"
-      >
-        <span className="text-2xl">⚙️</span>
-      </button>
+        {/* Career Explorer Button */}
+        <Link
+          href="/career"
+          className="group flex items-center gap-3 bg-white hover:bg-indigo-50 text-gray-900 px-5 py-2.5 rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105 border border-gray-200 hover:border-indigo-300"
+          title="Career Explorer"
+        >
+          <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg text-white">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <span className="hidden sm:inline font-semibold text-sm">Career</span>
+        </Link>
+      </div>
 
       {/* Master Table Modal */}
       <MasterTableModal
