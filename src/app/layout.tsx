@@ -9,9 +9,14 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Zuugnu - Community-Driven Gig Platform',
+  title: 'Empower Your Gig Journey with Zuugnu',
   description:
     'Join India\'s fastest-growing community-driven platform for pre-paid gigs, bidding opportunities, and skill-building. Earn by creating, amplifying, and delivering value—secured by escrow, powered by trust.',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
