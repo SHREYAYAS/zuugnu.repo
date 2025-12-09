@@ -50,8 +50,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#contact" className="text-gray-400 hover:text-white transition-colors">
-                  Contact Us
+                <Link href="/career" className="text-gray-400 hover:text-white transition-colors">
+                  Career Explorer
+                </Link>
+              </li>
+              <li>
+                <Link href="/master-tables" className="text-gray-400 hover:text-white transition-colors">
+                  Master Tables
                 </Link>
               </li>
             </ul>
