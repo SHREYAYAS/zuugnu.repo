@@ -229,23 +229,25 @@ export default function LoginPage() {
                 <div className="flex flex-1 gap-2">
                   {/* Spacer to match country code width */}
                   <div className="w-24"></div>
-                  {/* Password Input */}
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className="w-64 h-11 bg-white text-gray-800 placeholder-gray-400 rounded-lg px-4 border-2 border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                  />
-                  {/* Eye Icon */}
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="text-gray-600 hover:text-gray-800 transition-colors text-xl"
-                  >
-                    {showPassword ? '👁️' : '👁️‍🗨️'}
-                  </button>
+                  {/* Password Input with Eye Icon Inside */}
+                  <div className="relative w-64">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="w-full h-11 bg-white text-gray-800 placeholder-gray-400 rounded-lg px-4 pr-12 border-2 border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                    />
+                    {/* Eye Icon Inside Input */}
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800 transition-colors text-xl"
+                    >
+                      {showPassword ? '👁️' : '👁️‍🗨️'}
+                    </button>
+                  </div>
                 </div>
               </div>
 
