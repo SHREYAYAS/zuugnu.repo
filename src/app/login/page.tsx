@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import { MasterTableModal } from '@/components/MasterTableModal';
 
 export default function LoginPage() {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -10,6 +11,7 @@ export default function LoginPage() {
   const [countryCode, setCountryCode] = useState('+91');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showMasterTable, setShowMasterTable] = useState(false);
 
   const countries = [
     { code: '+91', name: 'India', flag: '🇮🇳' },
@@ -92,6 +94,31 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 flex items-center justify-center px-4 py-12">
+      {/* Career Options Button - Top Right */}
+      <Link
+        href="/career"
+        className="absolute top-6 right-20 flex items-center gap-2 bg-white bg-opacity-80 backdrop-blur-sm hover:bg-opacity-100 text-purple-600 hover:text-purple-700 font-bold px-4 py-2 rounded-full shadow-md transition-all transform hover:scale-105 border-2 border-purple-300 hover:border-purple-500"
+        title="Career Explorer"
+      >
+        <span className="text-xl">🚀</span>
+        <span className="hidden sm:inline">Career</span>
+      </Link>
+
+      {/* Master Table Button - Top Right */}
+      <button
+        onClick={() => setShowMasterTable(true)}
+        className="absolute top-6 right-6 flex items-center justify-center w-14 h-14 bg-white bg-opacity-80 backdrop-blur-sm hover:bg-opacity-100 text-indigo-600 hover:text-indigo-700 font-bold rounded-full shadow-md transition-all transform hover:scale-110 border-2 border-indigo-300 hover:border-indigo-500"
+        title="Master Table Management"
+      >
+        <span className="text-2xl">⚙️</span>
+      </button>
+
+      {/* Master Table Modal */}
+      <MasterTableModal
+        isOpen={showMasterTable}
+        onClose={() => setShowMasterTable(false)}
+      />
+
       {/* Back to Home Button */}
       <Link
         href="/"

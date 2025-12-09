@@ -4,7 +4,6 @@ import * as THREE from 'three';
 
 export default function ParticlesWavesBackground() {
   const mountRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
     let width = window.innerWidth;
