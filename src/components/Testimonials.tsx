@@ -23,16 +23,16 @@ export default function Testimonials() {
   ];
 
   return (
-    <section className="py-20 bg-gray-50" id="testimonials">
-      <div className="container mx-auto max-w-6xl px-5">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900">What Our Community Says</h2>
+    <section className="py-12 sm:py-20 bg-gray-50" id="testimonials">
+      <div className="container mx-auto max-w-6xl px-3 sm:px-5">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">What Our Community Says</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white rounded-lg p-8 shadow-md">
-              <p className="italic text-gray-600 mb-6">"{testimonial.text}"</p>
-              <div className="flex items-center gap-4">
+            <div key={index} className="bg-white rounded-lg p-5 sm:p-8 shadow-md">
+              <p className="italic text-sm sm:text-base text-gray-600 mb-5 sm:mb-6">"{testimonial.text}"</p>
+              <div className="flex items-center gap-3 sm:gap-4">
                 <Image
                   src={testimonial.avatar}
                   alt={testimonial.author}

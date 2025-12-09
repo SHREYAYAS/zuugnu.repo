@@ -1,0 +1,26 @@
+{
+  "extends": "lighthouse:default",
+  "settings": {
+    "formFactor": "mobile",
+    "screenEmulation": {
+      "mobile": true,
+      "width": 375,
+      "height": 667,
+      "deviceScaleFactor": 2,
+      "disabled": false
+    },
+    "throttling": {
+      "rttMs": 50,
+      "throughputKbps": 20000,
+      "cpuSlowdownMultiplier": 1
+    },
+    "skipAudits": []
+  },
+  "onlyCategories": [
+    "performance",
+    "accessibility",
+    "best-practices",
+    "seo",
+    "pwa"
+  ]
+}

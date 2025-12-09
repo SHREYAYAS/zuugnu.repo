@@ -2,9 +2,9 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-16" id="contact">
-      <div className="container mx-auto max-w-6xl px-5">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-8">
+    <footer className="bg-gray-900 text-white py-12 sm:py-16" id="contact">
+      <div className="container mx-auto max-w-6xl px-3 sm:px-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 mb-8">
           <div>
             <h3 className="text-lg font-semibold mb-5">Zuugnu</h3>
             <p className="text-gray-400 mb-5">

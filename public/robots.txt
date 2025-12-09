@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# Block access to sensitive files
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /offline.html
+
+# Allow Google, Bing, etc.
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Crawl delay (in seconds)
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://zuugnu.com/sitemap.xml

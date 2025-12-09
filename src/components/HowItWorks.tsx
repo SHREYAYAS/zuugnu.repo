@@ -23,19 +23,19 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="py-20 bg-gray-50" id="how-it-works">
-      <div className="container mx-auto max-w-6xl px-5">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900">How Zuugnu Works</h2>
+    <section className="py-12 sm:py-20 bg-gray-50" id="how-it-works">
+      <div className="container mx-auto max-w-6xl px-3 sm:px-5">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">How Zuugnu Works</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10">
           {steps.map((step, index) => (
             <div key={index} className="text-center">
-              <div className="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-5 text-3xl text-white">
+              <div className="w-16 sm:w-20 h-16 sm:h-20 bg-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 text-2xl sm:text-3xl text-white">
                 {step.icon}
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">{step.title}</h3>
-              <p className="text-gray-600">{step.description}</p>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3">{step.title}</h3>
+              <p className="text-sm sm:text-base text-gray-600">{step.description}</p>
             </div>
           ))}
         </div>
