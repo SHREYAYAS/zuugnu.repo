@@ -4,12 +4,15 @@ import ZuugnuThreeJsTitle from './ZuugnuThreeJsTitle';
 
 export default function Hero() {
   return (
-    <section className="relative pt-20 sm:pt-24 md:pt-28 pb-16 sm:pb-24 bg-gradient-to-b from-gray-100 to-gray-200 text-center overflow-hidden">
+    <section className="relative pt-20 sm:pt-24 md:pt-28 pb-32 sm:pb-40 md:pb-56 bg-gradient-to-b from-gray-100 to-gray-200 text-center overflow-hidden">
+      {/* Background particle effect covering entire section */}
+      <div className="absolute inset-0 w-full h-full z-0">
+        <ZuugnuThreeJsTitle />
+      </div>
+      
+      {/* Content layer on top */}
       <div className="relative z-10 container mx-auto max-w-6xl px-4 sm:px-5">
-        <div className="mb-0">
-          <ZuugnuThreeJsTitle />
-        </div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-5 leading-tight -mt-72">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-5 leading-tight">
           Empower Your Gig Journey with Zuugnu
         </h1>
         <p className="text-base sm:text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
