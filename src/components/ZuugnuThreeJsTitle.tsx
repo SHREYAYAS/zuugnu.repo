@@ -17,7 +17,6 @@ export default function ZuugnuThreeJsTitle() {
 
     // Scene setup
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xf3f4f6);
 
     // Camera setup
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
@@ -27,6 +26,7 @@ export default function ZuugnuThreeJsTitle() {
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setClearColor(0x000000, 0); // Fully transparent background
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
@@ -162,5 +162,5 @@ export default function ZuugnuThreeJsTitle() {
     };
   }, []);
 
-  return <div ref={containerRef} className="w-full h-80 md:h-96" />;
+  return <div ref={containerRef} className="absolute inset-0 w-full h-full" />;
 }
