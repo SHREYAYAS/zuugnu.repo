@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import ParticlesWavesBackground from './ParticlesWavesBackground';
+import ZuugnuThreeJsTitle from './ZuugnuThreeJsTitle';
 
 export default function Hero() {
   return (
     <section className="relative pt-20 sm:pt-24 md:pt-28 pb-16 sm:pb-24 bg-gradient-to-b from-gray-100 to-gray-200 text-center overflow-hidden">
-      <ParticlesWavesBackground />
       <div className="relative z-10 container mx-auto max-w-6xl px-4 sm:px-5">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-5 leading-tight">
+        <div className="mb-0">
+          <ZuugnuThreeJsTitle />
+        </div>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-5 leading-tight -mt-72">
           Empower Your Gig Journey with Zuugnu
         </h1>
         <p className="text-base sm:text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
