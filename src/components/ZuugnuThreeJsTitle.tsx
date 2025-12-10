@@ -94,7 +94,7 @@ export default function ZuugnuThreeJsTitle() {
     geometry.setAttribute('color', colorAttribute);
 
     const material = new THREE.PointsMaterial({
-      size: 0.4,
+      size: 0.03,
       sizeAttenuation: true,
       vertexColors: true,
       transparent: false,
