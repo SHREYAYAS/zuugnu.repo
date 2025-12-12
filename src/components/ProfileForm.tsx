@@ -123,6 +123,13 @@ export default function ProfileForm({ onClose }: ProfileFormProps) {
     }
   };
 
+  const previousStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+      window.scrollTo(0, 0);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Profile data:', { ...formData, profilePic });
@@ -195,13 +202,15 @@ export default function ProfileForm({ onClose }: ProfileFormProps) {
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={nextStep}
-                  className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:opacity-90 transition"
-                >
-                  Next
-                </button>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={nextStep}
+                    className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:opacity-90 transition"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             )}
 
@@ -304,13 +313,22 @@ export default function ProfileForm({ onClose }: ProfileFormProps) {
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={nextStep}
-                  className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:opacity-90 transition"
-                >
-                  Next
-                </button>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={previousStep}
+                    className="flex-1 py-3 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500 transition flex items-center justify-center gap-2"
+                  >
+                    ← Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={nextStep}
+                    className="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:opacity-90 transition"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             )}
 
@@ -378,13 +396,22 @@ export default function ProfileForm({ onClose }: ProfileFormProps) {
                   />
                 </div>
 
-                <button
-                  type="button"
-                  onClick={nextStep}
-                  className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:opacity-90 transition"
-                >
-                  Next
-                </button>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={previousStep}
+                    className="flex-1 py-3 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500 transition flex items-center justify-center gap-2"
+                  >
+                    ← Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={nextStep}
+                    className="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:opacity-90 transition"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             )}
 
@@ -456,13 +483,22 @@ export default function ProfileForm({ onClose }: ProfileFormProps) {
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={nextStep}
-                  className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:opacity-90 transition"
-                >
-                  Next
-                </button>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={previousStep}
+                    className="flex-1 py-3 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500 transition flex items-center justify-center gap-2"
+                  >
+                    ← Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={nextStep}
+                    className="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:opacity-90 transition"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             )}
 
@@ -515,12 +551,21 @@ export default function ProfileForm({ onClose }: ProfileFormProps) {
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:opacity-90 transition"
-                >
-                  Submit Profile
-                </button>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={previousStep}
+                    className="flex-1 py-3 bg-gray-400 text-white rounded-lg font-semibold hover:bg-gray-500 transition flex items-center justify-center gap-2"
+                  >
+                    ← Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg font-semibold hover:opacity-90 transition"
+                  >
+                    Submit Profile
+                  </button>
+                </div>
               </div>
             )}
           </form>
