@@ -126,8 +126,8 @@ export default function ProfileForm({ onClose }: ProfileFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Profile data:', { ...formData, profilePic });
-    // Navigate to dashboard after successful submission
-    router.push('/dashboard');
+    // Show success screen before entering dashboard
+    router.push('/success');
   };
 
   const progress = (currentStep / totalSteps) * 100;
