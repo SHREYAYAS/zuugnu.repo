@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { MasterTableModal } from '@/components/MasterTableModal';
+import ProfileForm from '@/components/ProfileForm';
 
 export default function LoginPage() {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -12,6 +13,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showMasterTable, setShowMasterTable] = useState(false);
+  const [showProfileForm, setShowProfileForm] = useState(false);
 
   const countries = [
     { code: '+91', name: 'India', flag: '🇮🇳' },
@@ -89,7 +91,11 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     console.log('Login attempt:', { phoneNumber, password });
-    setIsLoading(false);
+    // Simulate login success
+    setTimeout(() => {
+      setIsLoading(false);
+      setShowProfileForm(true);
+    }, 1500);
   };
 
   return (
@@ -313,6 +319,11 @@ export default function LoginPage() {
       <div className="absolute bottom-4 left-0 right-0 text-center">
         <p className="text-gray-600 text-sm font-medium">© 2025 Zuugnu.com | All rights reserved</p>
       </div>
+
+      {/* Profile Form Modal */}
+      {showProfileForm && (
+        <ProfileForm onClose={() => setShowProfileForm(false)} />
+      )}
     </div>
   );
 }
