@@ -101,7 +101,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 flex items-center justify-center px-4 py-12">
       {/* Top Navigation Bar - Career & Master Table Buttons */}
-      <div className="absolute top-6 right-6 flex items-center gap-4">
+      <div className="absolute top-4 sm:top-6 right-4 sm:right-6 flex items-center gap-2 sm:gap-4 z-10">
         {/* Master Table Button */}
         <button
           onClick={() => setShowMasterTable(true)}
@@ -141,11 +141,11 @@ export default function LoginPage() {
       {/* Back to Home Button */}
       <Link
         href="/"
-        className="absolute top-6 left-6 flex items-center gap-2 bg-white bg-opacity-80 backdrop-blur-sm hover:bg-opacity-100 text-gray-700 hover:text-indigo-600 font-semibold px-4 py-2 rounded-lg shadow-md transition-all transform hover:scale-105 border border-purple-200"
+        className="absolute top-4 sm:top-6 left-4 sm:left-6 flex items-center gap-2 bg-white bg-opacity-80 backdrop-blur-sm hover:bg-opacity-100 text-gray-700 hover:text-indigo-600 font-semibold px-3 sm:px-4 py-2 rounded-lg shadow-md transition-all transform hover:scale-105 border border-purple-200 z-10"
       >
         <span className="text-xl">←</span>
         <span className="text-xl">🏠</span>
-        <span>Home</span>
+        <span className="hidden sm:inline">Home</span>
       </Link>
 
       {/* Background decorative elements */}
@@ -154,8 +154,8 @@ export default function LoginPage() {
         <div className="absolute bottom-20 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
       </div>
 
-      <div className="relative z-10 w-full max-w-6xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="relative z-10 w-full max-w-6xl mt-16 sm:mt-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {/* Register Card */}
           <div className="bg-white bg-opacity-80 backdrop-blur-lg rounded-3xl p-8 sm:p-12 border border-purple-200 shadow-2xl hover:shadow-purple-300 transition-all">
             <div className="text-center mb-8">

@@ -6,10 +6,12 @@ import Training from '@/components/Training';
 import Testimonials from '@/components/Testimonials';
 import CTA from '@/components/CTA';
 import Footer from '@/components/Footer';
+import StructuredData from '@/components/StructuredData';
 
 export default function Home() {
   return (
     <>
+      <StructuredData />
       <Header />
       <main>
         <Hero />

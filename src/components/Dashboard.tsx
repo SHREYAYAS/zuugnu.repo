@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 export default function Dashboard() {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const sampleData = [
     {
@@ -78,8 +79,33 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-slate-900 via-slate-950 to-black text-slate-100">
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white/10 border border-white/20 rounded-lg text-white"
+        aria-label="Toggle menu"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          {sidebarOpen ? (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          ) : (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          )}
+        </svg>
+      </button>
+
+      {/* Sidebar Overlay for mobile */}
+      {sidebarOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-30"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 fixed h-screen overflow-y-auto bg-white/5 border-r border-white/10 backdrop-blur-xl shadow-2xl">
+      <aside className={`w-64 fixed h-screen overflow-y-auto bg-white/5 border-r border-white/10 backdrop-blur-xl shadow-2xl transition-transform duration-300 z-40 ${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+      }`}>
         <div className="p-6 border-b border-white/10">
           <h2 className="text-2xl font-bold tracking-tight">
             <span className="text-cyan-300">CRM</span> Dashboard
@@ -116,7 +142,7 @@ export default function Dashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="ml-64 flex-1 p-6 lg:p-10 space-y-6">
+      <main className="lg:ml-64 flex-1 p-4 sm:p-6 lg:p-10 space-y-6 w-full">
         {/* Hero */}
         <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-6 lg:p-8 shadow-2xl shadow-cyan-500/10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -286,8 +312,8 @@ export default function Dashboard() {
           </div>
 
           {/* Data Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto -mx-6 px-6">
+            <table className="w-full min-w-[800px]">
               <thead className="bg-white/5 border-b border-white/10">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-slate-300">

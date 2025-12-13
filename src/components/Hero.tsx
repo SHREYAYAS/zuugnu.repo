@@ -1,21 +1,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import ZuugnuThreeJsTitle from './ZuugnuThreeJsTitle';
 
 export default function Hero() {
   return (
-    <section className="relative pt-20 sm:pt-24 md:pt-28 pb-32 sm:pb-40 md:pb-56 bg-gradient-to-b from-gray-100 to-gray-200 text-center overflow-hidden">
-      {/* Background particle effect covering entire section */}
-      <div className="absolute inset-0 w-full h-full z-0">
-        <ZuugnuThreeJsTitle />
-      </div>
-      
+    <section className="relative pt-20 sm:pt-24 md:pt-28 pb-32 sm:pb-40 md:pb-56 text-center overflow-hidden">
       {/* Content layer on top */}
       <div className="relative z-10 container mx-auto max-w-6xl px-4 sm:px-5">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-5 leading-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-5 leading-tight drop-shadow-lg">
           Empower Your Gig Journey with Zuugnu
         </h1>
-        <p className="text-base sm:text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
+        <p className="text-base sm:text-lg text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
           Join India's fastest-growing community-driven platform for pre-paid gigs, bidding opportunities, and
           skill-building. Earn by creating, amplifying, and delivering value—secured by escrow, powered by trust.
         </p>
