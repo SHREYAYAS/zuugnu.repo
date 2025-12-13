@@ -16,7 +16,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-white shadow-md sticky top-0 w-full z-50">
+    <header className="bg-white/10 backdrop-blur-md shadow-md sticky top-0 w-full z-50 border-b border-white/20">
       <nav className="container mx-auto max-w-7xl px-3 sm:px-4 lg:px-6 flex justify-between items-center py-2 sm:py-3">
         {/* Logo */}
         <Link href="/" className="flex-shrink-0">
@@ -37,7 +37,7 @@ export default function Header() {
             <li key={link.href}>
               <Link 
                 href={link.href} 
-                className="text-gray-700 font-medium hover:text-indigo-600 transition-colors px-2 py-1 text-sm"
+                className="text-white font-medium hover:text-yellow-400 transition-colors px-2 py-1 text-sm"
               >
                 {link.label}
               </Link>

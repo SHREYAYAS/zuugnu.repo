@@ -23,15 +23,15 @@ export default function Testimonials() {
   ];
 
   return (
-    <section className="py-12 sm:py-20 bg-gray-50" id="testimonials">
+    <section className="py-12 sm:py-20 bg-transparent" id="testimonials">
       <div className="container mx-auto max-w-6xl px-3 sm:px-5">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">What Our Community Says</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white">What Our Community Says</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white rounded-lg p-5 sm:p-8 shadow-md">
-              <p className="italic text-sm sm:text-base text-gray-600 mb-5 sm:mb-6">"{testimonial.text}"</p>
+            <div key={index} className="bg-white/10 backdrop-blur-md rounded-lg p-5 sm:p-8 shadow-md border border-white/20 hover:bg-white/20 transition-all">
+              <p className="italic text-sm sm:text-base text-gray-200 mb-5 sm:mb-6">"{testimonial.text}"</p>
               <div className="flex items-center gap-3 sm:gap-4">
                 <Image
                   src={testimonial.avatar}
@@ -41,8 +41,8 @@ export default function Testimonials() {
                   className="w-12 h-12 rounded-full"
                 />
                 <div>
-                  <h4 className="font-semibold text-gray-900">{testimonial.author}</h4>
-                  <p className="text-gray-600 text-sm">{testimonial.role}</p>
+                  <h4 className="font-semibold text-white">{testimonial.author}</h4>
+                  <p className="text-gray-300 text-sm">{testimonial.role}</p>
                 </div>
               </div>
             </div>
