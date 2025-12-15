@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { Icon } from './Icons';
 
 interface Occupation {
   id: string;
@@ -551,6 +552,7 @@ export const CareerExplorer: React.FC = () => {
   const [expandedAttribute, setExpandedAttribute] = useState<string | null>(null);
   const [selectedOccupationAttribute, setSelectedOccupationAttribute] = useState<{ occupation: string; attribute: string } | null>(null);
     const [isMobile, setIsMobile] = useState(false);
+  const [bottomOpenAttribute, setBottomOpenAttribute] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -600,6 +602,17 @@ export const CareerExplorer: React.FC = () => {
     console.log(`Show graph for ${occupationId} - ${attribute}`);
   };
 
+  const openBottomOptions = (attribute: string) => {
+    setBottomOpenAttribute(attribute);
+  };
+
+  const bottomItems = React.useMemo(() => {
+    if (!bottomOpenAttribute) return [] as string[];
+    const baseCategory = careerCategoriesData[0]; // Use "Career Ability" for bottom table
+    const found = baseCategory.attributes.find(a => a.name === bottomOpenAttribute);
+    return found?.items ?? [];
+  }, [bottomOpenAttribute]);
+
   return (
     <div className="w-full max-w-7xl mx-auto">
             {/* Backdrop overlay for mobile */}
@@ -639,7 +652,10 @@ export const CareerExplorer: React.FC = () => {
                 className="relative bg-gradient-to-br from-white to-gray-50 hover:from-purple-50 hover:to-blue-50 border-2 border-gray-200 hover:border-purple-300 px-6 py-5 text-left font-semibold text-gray-800 cursor-pointer transition-all duration-300 rounded-xl shadow-sm hover:shadow-xl flex justify-between items-center transform"
               >
                 <span className="text-base bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text group-hover:from-purple-600 group-hover:to-blue-600 transition-all duration-300">
-                  {category.name}
+                  <span className="inline-flex items-center gap-2">
+                    <Icon name={category.name} size={18} className="text-purple-600 shrink-0" />
+                    {category.name}
+                  </span>
                 </span>
                 <span className="text-sm bg-purple-100 text-purple-600 px-2.5 py-1 rounded-full transition-transform duration-300">
                   {expandedCategory === category.name ? '▲' : '▼'}
@@ -696,7 +712,7 @@ export const CareerExplorer: React.FC = () => {
                             className="w-full px-4 py-3 font-semibold text-sm text-gray-800 hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50 transition-all duration-300 flex justify-between items-center group"
                           >
                             <span className="flex items-center gap-2">
-                              <span className="w-2 h-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></span>
+                              <Icon name={attribute.name} size={16} className="text-purple-600 shrink-0" />
                               {attribute.name}
                             </span>
                             <span className={`text-xs transition-all duration-300 ${isExpanded ? 'rotate-180' : ''} transform`}>
@@ -713,7 +729,7 @@ export const CareerExplorer: React.FC = () => {
                                   key={itemIdx} 
                                   className="text-sm text-gray-700 hover:text-purple-600 cursor-pointer py-2 px-3 hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50 rounded-lg transition-all duration-200 flex items-center gap-2 group"
                                 >
-                                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full group-hover:scale-150 transition-transform duration-200"></span>
+                                  <Icon name={attribute.name} size={12} className="text-purple-500 shrink-0" />
                                   <span className="group-hover:translate-x-1 transition-transform duration-200">{item}</span>
                                 </li>
                               ))}
@@ -728,6 +744,87 @@ export const CareerExplorer: React.FC = () => {
             </div>
           );
         })}
+      </div>
+
+      {/* Bottom Summary Table */}
+      <div className="mt-8">
+        <h3 className="text-2xl font-semibold text-gray-800 mb-4">Career Explorer</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-2 border-gray-200 rounded-xl overflow-hidden">
+            <thead>
+              <tr className="bg-gray-50 text-gray-800">
+                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Occupations" size={14} className="text-purple-600 shrink-0" />Occupations</span></th>
+                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Abilities" size={14} className="text-purple-600 shrink-0" />Abilities</span></th>
+                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Activities" size={14} className="text-purple-600 shrink-0" />Activities</span></th>
+                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Knowledge" size={14} className="text-purple-600 shrink-0" />Knowledge</span></th>
+                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Preference" size={14} className="text-purple-600 shrink-0" />Preference</span></th>
+                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Skills" size={14} className="text-purple-600 shrink-0" />Skills</span></th>
+                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Technology" size={14} className="text-purple-600 shrink-0" />Technology</span></th>
+                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Traits" size={14} className="text-purple-600 shrink-0" />Traits</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {sampleOccupations.map((occ) => (
+                <tr key={occ.id} className="bg-white">
+                  <td className="px-4 py-3 border border-gray-200 font-medium text-gray-900">
+                    {occ.name}
+                  </td>
+                  {/* Abilities with Graph action */}
+                  <td className="px-4 py-3 border border-gray-200">
+                    <button
+                      className="text-purple-600 hover:text-purple-800 font-semibold"
+                      onClick={() => { handleShowGraph(occ.name, 'Abilities'); openBottomOptions('Abilities'); }}
+                      onMouseEnter={() => openBottomOptions('Abilities')}
+                    >
+                      {'>>'} Graph
+                    </button>
+                  </td>
+                  {/* Other attributes with view details */}
+                  {['Activities','Knowledge','Preference','Skills','Technology','Traits'].map((attr) => (
+                    <td key={`${occ.id}-${attr}`} className="px-4 py-3 border border-gray-200">
+                      <button
+                        className="text-purple-600 hover:text-purple-800 font-semibold"
+                        onClick={() => { handleViewDetails(occ.name, attr); openBottomOptions(attr); }}
+                        onMouseEnter={() => openBottomOptions(attr)}
+                      >
+                        {'>>'}
+                      </button>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {/* Bottom options panel */}
+        {bottomOpenAttribute && (
+          <div className="mt-4 bg-white border-2 border-purple-200 rounded-xl shadow-md p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="font-semibold text-gray-800">{bottomOpenAttribute} Options</h4>
+              <button
+                className="text-gray-400 hover:text-gray-600"
+                onClick={() => setBottomOpenAttribute(null)}
+                aria-label="Close options"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            {bottomItems.length > 0 ? (
+              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                {bottomItems.map((it, idx) => (
+                  <li key={idx} className="text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 flex items-center gap-2">
+                    <Icon name={bottomOpenAttribute} size={14} className="text-purple-600 shrink-0" />
+                    {it}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-500">No options available.</p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
