@@ -16,7 +16,13 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; - Moved to CSS @media for user preference */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -74,6 +80,25 @@ textarea:focus-visible {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
+/* Thin scrollbar for dropdown menus */
+.dropdown-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdown-scroll::-webkit-scrollbar-track {
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.dropdown-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #a78bfa, #818cf8);
+  border-radius: 10px;
+}
+
+.dropdown-scroll::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #8b5cf6, #6366f1);
+}
+
 }
 
 /* Firefox Scrollbar */
@@ -82,3 +107,18 @@ textarea:focus-visible {
   scrollbar-width: thin;
 }
 
+/* Dropdown Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}

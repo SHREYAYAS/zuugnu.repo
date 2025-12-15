@@ -1,357 +1,733 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import {
-  CareerAbilityIcon,
-  CareerActivityIcon,
-  CareerIndustryIcon,
-  CareerKnowledgeIcon,
-  CareerOutlookIcon,
-  CareerPathwayIcon,
-  CareerPreferenceIcon,
-  CareerSectorIcon,
-  CareerSkillsIcon,
-  CareerSTEMIcon,
-  CareerTechnologyIcon,
-  CareerTraitsIcon,
-  CareerZoneIcon,
-  OccupationsIcon,
-} from './CareerIcons';
 
-interface CareerCategory {
+interface Occupation {
   id: string;
   name: string;
-  icon: React.ReactNode;
-  color: string;
-  description: string;
 }
 
-interface Career {
-  id: string;
-  title: string;
-  category: string;
-  salary: string;
-  growth: string;
-  description: string;
-  skills: string[];
-  education: string;
-}
-
-const careerCategories: CareerCategory[] = [
+const sampleOccupations: Occupation[] = [
   {
-    id: 'ability',
-    name: 'Career Ability',
-    icon: <CareerAbilityIcon size={48} />,
-    color: 'from-blue-400 to-blue-600',
-    description: 'Skills & capabilities required',
-  },
-  {
-    id: 'activity',
-    name: 'Career Activity',
-    icon: <CareerActivityIcon size={48} />,
-    color: 'from-red-400 to-red-600',
-    description: 'Day-to-day activities',
-  },
-  {
-    id: 'industry',
-    name: 'Career Industry',
-    icon: <CareerIndustryIcon size={48} />,
-    color: 'from-purple-400 to-purple-600',
-    description: 'Industry sectors',
-  },
-  {
-    id: 'knowledge',
-    name: 'Career Knowledge',
-    icon: <CareerKnowledgeIcon size={48} />,
-    color: 'from-orange-400 to-orange-600',
-    description: 'Required knowledge areas',
-  },
-  {
-    id: 'outlook',
-    name: 'Career Outlook',
-    icon: <CareerOutlookIcon size={48} />,
-    color: 'from-cyan-400 to-cyan-600',
-    description: 'Future prospects',
-  },
-  {
-    id: 'pathway',
-    name: 'Career Pathway',
-    icon: <CareerPathwayIcon size={48} />,
-    color: 'from-green-400 to-green-600',
-    description: 'Career progression paths',
-  },
-  {
-    id: 'preference',
-    name: 'Career Preference',
-    icon: <CareerPreferenceIcon size={48} />,
-    color: 'from-indigo-400 to-indigo-600',
-    description: 'Career preferences',
-  },
-  {
-    id: 'sector',
-    name: 'Career Sector',
-    icon: <CareerSectorIcon size={48} />,
-    color: 'from-teal-400 to-teal-600',
-    description: 'Economic sectors',
-  },
-  {
-    id: 'skills',
-    name: 'Career Skills',
-    icon: <CareerSkillsIcon size={48} />,
-    color: 'from-yellow-400 to-yellow-600',
-    description: 'Core competencies',
-  },
-  {
-    id: 'stem',
-    name: 'Career STEM',
-    icon: <CareerSTEMIcon size={48} />,
-    color: 'from-indigo-400 to-indigo-600',
-    description: 'Science, Tech, Engineering, Math',
-  },
-  {
-    id: 'technology',
-    name: 'Career Technology',
-    icon: <CareerTechnologyIcon size={48} />,
-    color: 'from-slate-400 to-slate-600',
-    description: 'Tech-focused careers',
-  },
-  {
-    id: 'traits',
-    name: 'Career Traits',
-    icon: <CareerTraitsIcon size={48} />,
-    color: 'from-amber-400 to-amber-600',
-    description: 'Required personality traits',
-  },
-  {
-    id: 'zone',
-    name: 'Career Zone',
-    icon: <CareerZoneIcon size={48} />,
-    color: 'from-red-400 to-red-600',
-    description: 'Geographic job zones',
+    id: '1',
+    name: 'Web Designer',
   },
 ];
 
-const careerExamples: Career[] = [
+interface AttributeOption {
+  name: string;
+  items: string[];
+}
+
+interface CareerCategoryData {
+  name: string;
+  attributes: AttributeOption[];
+}
+
+const careerCategoriesData: CareerCategoryData[] = [
   {
-    id: 'actuary',
-    title: 'Actuary',
-    category: 'stem',
-    salary: '$100,000 - $150,000+',
-    growth: '24% (Much Faster than Average)',
-    description: 'Actuaries analyze the financial risks of future events.',
-    skills: ['Mathematics', 'Risk Analysis', 'Problem Solving', 'Statistical Analysis'],
-    education: "Bachelor's Degree in Mathematics/Actuarial Science",
+    name: 'Career Ability',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['Web Designer', 'Software Developer', 'Data Analyst', 'UX Designer', 'Project Manager'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Verbal Ability', 'Mathematical Ability', 'Spatial Ability', 'Perceptual Ability', 'Manual Dexterity'],
+      },
+      {
+        name: 'Activities',
+        items: ['Information Input', 'Mental Processes', 'Work Output', 'Interacting with Others'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Business', 'Engineering', 'Arts & Humanities', 'Science', 'Health Services'],
+      },
+      {
+        name: 'Preference',
+        items: ['Work Environment', 'Work Schedule', 'Work Style', 'Work Values'],
+      },
+      {
+        name: 'Skills',
+        items: ['Technical Skills', 'Soft Skills', 'Leadership Skills', 'Communication Skills'],
+      },
+      {
+        name: 'Technology',
+        items: ['Software Development', 'Data Science', 'Cybersecurity', 'Cloud Computing', 'AI/ML'],
+      },
+      {
+        name: 'Traits',
+        items: ['Achievement', 'Independence', 'Recognition', 'Support', 'Working Conditions'],
+      },
+    ],
   },
   {
-    id: 'software-engineer',
-    title: 'Software Engineer',
-    category: 'technology',
-    salary: '$105,000 - $130,000+',
-    growth: '22% (Much Faster than Average)',
-    description: 'Develop, test, and maintain software applications.',
-    skills: ['Programming', 'System Design', 'Problem Solving', 'Collaboration'],
-    education: "Bachelor's Degree in Computer Science",
+    name: 'Career Activity',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['Marketing Manager', 'Sales Representative', 'Event Coordinator', 'Content Creator'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Communication', 'Organization', 'Creativity', 'Time Management'],
+      },
+      {
+        name: 'Activities',
+        items: ['Planning', 'Coordinating', 'Presenting', 'Analyzing'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Marketing', 'Sales', 'Public Relations', 'Social Media'],
+      },
+      {
+        name: 'Preference',
+        items: ['Fast-paced Environment', 'Client Interaction', 'Team Collaboration'],
+      },
+      {
+        name: 'Skills',
+        items: ['Negotiation', 'Persuasion', 'Strategic Planning', 'Problem Solving'],
+      },
+      {
+        name: 'Technology',
+        items: ['CRM Systems', 'Analytics Tools', 'Marketing Automation', 'Social Media Platforms'],
+      },
+      {
+        name: 'Traits',
+        items: ['Outgoing', 'Energetic', 'Results-oriented', 'Adaptable'],
+      },
+    ],
   },
   {
-    id: 'data-scientist',
-    title: 'Data Scientist',
-    category: 'technology',
-    salary: '$90,000 - $140,000+',
-    growth: '36% (Much Faster than Average)',
-    description: 'Analyze complex data to help organizations make decisions.',
-    skills: ['Data Analysis', 'Machine Learning', 'Python/R', 'Statistical Knowledge'],
-    education: "Bachelor's or Master's in Data Science/Statistics",
+    name: 'Career Industry',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['Industry Analyst', 'Business Consultant', 'Operations Manager'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Analytical Thinking', 'Strategic Planning', 'Market Analysis'],
+      },
+      {
+        name: 'Activities',
+        items: ['Research', 'Analysis', 'Reporting', 'Strategy Development'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Healthcare', 'Technology', 'Finance', 'Education', 'Manufacturing', 'Retail'],
+      },
+      {
+        name: 'Preference',
+        items: ['Industry Focus', 'Growth Potential', 'Innovation Level'],
+      },
+      {
+        name: 'Skills',
+        items: ['Industry Research', 'Trend Analysis', 'Competitive Intelligence'],
+      },
+      {
+        name: 'Technology',
+        items: ['Industry Software', 'Analytics Platforms', 'Research Tools'],
+      },
+      {
+        name: 'Traits',
+        items: ['Curious', 'Detail-oriented', 'Forward-thinking'],
+      },
+    ],
   },
   {
-    id: 'ux-designer',
-    title: 'UX/UI Designer',
-    category: 'industry',
-    salary: '$70,000 - $110,000+',
-    growth: '15% (Average)',
-    description: 'Design user-friendly interfaces for digital products.',
-    skills: ['Design Thinking', 'User Research', 'Prototyping', 'Communication'],
-    education: "Bachelor's Degree in Design or related field",
+    name: 'Career Interest',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['Career Counselor', 'HR Specialist', 'Training Coordinator'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Interpersonal Skills', 'Assessment', 'Guidance'],
+      },
+      {
+        name: 'Activities',
+        items: ['Counseling', 'Testing', 'Career Planning', 'Workshops'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Realistic', 'Investigative', 'Artistic', 'Social', 'Enterprising', 'Conventional'],
+      },
+      {
+        name: 'Preference',
+        items: ['Helping Others', 'Personal Development', 'Career Growth'],
+      },
+      {
+        name: 'Skills',
+        items: ['Active Listening', 'Career Assessment', 'Mentoring'],
+      },
+      {
+        name: 'Technology',
+        items: ['Assessment Tools', 'Career Planning Software', 'LMS Systems'],
+      },
+      {
+        name: 'Traits',
+        items: ['Empathetic', 'Patient', 'Supportive', 'Motivating'],
+      },
+    ],
   },
   {
-    id: 'project-manager',
-    title: 'Project Manager',
-    category: 'activity',
-    salary: '$75,000 - $120,000+',
-    growth: '8% (Average)',
-    description: 'Oversee project planning, execution, and completion.',
-    skills: ['Leadership', 'Organization', 'Risk Management', 'Communication'],
-    education: "Bachelor's Degree + Project Management Certification",
+    name: 'Career Knowledge',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['Knowledge Manager', 'Researcher', 'Subject Matter Expert'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Research', 'Analysis', 'Documentation', 'Teaching'],
+      },
+      {
+        name: 'Activities',
+        items: ['Information Gathering', 'Knowledge Sharing', 'Documentation'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Business', 'Engineering', 'Arts & Humanities', 'Science', 'Health Services'],
+      },
+      {
+        name: 'Preference',
+        items: ['Learning Environment', 'Academic Setting', 'Knowledge Sharing'],
+      },
+      {
+        name: 'Skills',
+        items: ['Research Methods', 'Critical Thinking', 'Information Management'],
+      },
+      {
+        name: 'Technology',
+        items: ['Research Databases', 'Knowledge Management Systems', 'Documentation Tools'],
+      },
+      {
+        name: 'Traits',
+        items: ['Inquisitive', 'Thorough', 'Analytical', 'Detail-focused'],
+      },
+    ],
+  },
+  {
+    name: 'Career Outlook',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['Labor Economist', 'Career Strategist', 'Workforce Analyst'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Forecasting', 'Data Analysis', 'Trend Identification'],
+      },
+      {
+        name: 'Activities',
+        items: ['Market Research', 'Data Collection', 'Trend Analysis'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Job Growth Rate', 'Salary Trends', 'Industry Demand', 'Automation Risk'],
+      },
+      {
+        name: 'Preference',
+        items: ['Future Planning', 'Long-term Growth', 'Stability'],
+      },
+      {
+        name: 'Skills',
+        items: ['Economic Analysis', 'Statistical Modeling', 'Report Writing'],
+      },
+      {
+        name: 'Technology',
+        items: ['Statistical Software', 'Economic Models', 'Data Visualization'],
+      },
+      {
+        name: 'Traits',
+        items: ['Forward-thinking', 'Analytical', 'Strategic'],
+      },
+    ],
+  },
+  {
+    name: 'Career Pathway',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['Career Coach', 'Talent Development Manager', 'Succession Planner'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Planning', 'Mentoring', 'Strategy Development'],
+      },
+      {
+        name: 'Activities',
+        items: ['Career Mapping', 'Skills Assessment', 'Development Planning'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Entry Level', 'Mid Career', 'Senior Level', 'Executive Level', 'Specialized Tracks'],
+      },
+      {
+        name: 'Preference',
+        items: ['Career Advancement', 'Skill Development', 'Leadership Roles'],
+      },
+      {
+        name: 'Skills',
+        items: ['Career Planning', 'Skills Development', 'Leadership Development'],
+      },
+      {
+        name: 'Technology',
+        items: ['Career Pathing Software', 'Skills Assessment Tools', 'LMS'],
+      },
+      {
+        name: 'Traits',
+        items: ['Ambitious', 'Goal-oriented', 'Persistent'],
+      },
+    ],
+  },
+  {
+    name: 'Career Preference',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['HR Consultant', 'Workplace Designer', 'Culture Specialist'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Assessment', 'Matching', 'Environment Design'],
+      },
+      {
+        name: 'Activities',
+        items: ['Preference Assessment', 'Job Matching', 'Culture Analysis'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Work Environment', 'Work Schedule', 'Work Style', 'Work Values'],
+      },
+      {
+        name: 'Preference',
+        items: ['Flexibility', 'Work-Life Balance', 'Company Culture'],
+      },
+      {
+        name: 'Skills',
+        items: ['Needs Assessment', 'Job Fit Analysis', 'Culture Assessment'],
+      },
+      {
+        name: 'Technology',
+        items: ['Job Matching Software', 'Culture Assessment Tools', 'Survey Platforms'],
+      },
+      {
+        name: 'Traits',
+        items: ['Understanding', 'Flexible', 'People-oriented'],
+      },
+    ],
+  },
+  {
+    name: 'Career Sector',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['Sector Analyst', 'Business Development Manager', 'Industry Consultant'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Sector Analysis', 'Market Understanding', 'Business Acumen'],
+      },
+      {
+        name: 'Activities',
+        items: ['Sector Research', 'Market Analysis', 'Opportunity Identification'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Private Sector', 'Public Sector', 'Non-Profit', 'Self-Employment'],
+      },
+      {
+        name: 'Preference',
+        items: ['Sector Type', 'Organization Size', 'Mission Alignment'],
+      },
+      {
+        name: 'Skills',
+        items: ['Sector Analysis', 'Business Strategy', 'Market Research'],
+      },
+      {
+        name: 'Technology',
+        items: ['Market Research Tools', 'Business Intelligence', 'Analytics Platforms'],
+      },
+      {
+        name: 'Traits',
+        items: ['Business-minded', 'Strategic', 'Opportunistic'],
+      },
+    ],
+  },
+  {
+    name: 'Career Skills',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['Skills Trainer', 'Learning & Development Specialist', 'Training Manager'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Training', 'Skill Assessment', 'Curriculum Development'],
+      },
+      {
+        name: 'Activities',
+        items: ['Training Delivery', 'Skills Assessment', 'Course Development'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Technical Skills', 'Soft Skills', 'Leadership Skills', 'Communication Skills'],
+      },
+      {
+        name: 'Preference',
+        items: ['Continuous Learning', 'Skill Mastery', 'Professional Development'],
+      },
+      {
+        name: 'Skills',
+        items: ['Training Delivery', 'Instructional Design', 'Competency Assessment'],
+      },
+      {
+        name: 'Technology',
+        items: ['LMS Platforms', 'E-learning Tools', 'Assessment Software'],
+      },
+      {
+        name: 'Traits',
+        items: ['Teaching-oriented', 'Patient', 'Organized'],
+      },
+    ],
+  },
+  {
+    name: 'Career STEM',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['STEM Educator', 'Research Scientist', 'Technical Specialist', 'Engineer'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Scientific Reasoning', 'Mathematical Skills', 'Technical Aptitude'],
+      },
+      {
+        name: 'Activities',
+        items: ['Research', 'Analysis', 'Problem Solving', 'Innovation'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Computer Science', 'Engineering', 'Life Sciences', 'Physical Sciences', 'Mathematics'],
+      },
+      {
+        name: 'Preference',
+        items: ['Research Environment', 'Innovation Focus', 'Technical Challenges'],
+      },
+      {
+        name: 'Skills',
+        items: ['Scientific Method', 'Data Analysis', 'Technical Writing', 'Programming'],
+      },
+      {
+        name: 'Technology',
+        items: ['Lab Equipment', 'Research Software', 'Programming Languages', 'Simulation Tools'],
+      },
+      {
+        name: 'Traits',
+        items: ['Analytical', 'Precise', 'Innovative', 'Logical'],
+      },
+    ],
+  },
+  {
+    name: 'Career Technology',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['Software Engineer', 'Data Scientist', 'DevOps Engineer', 'Security Analyst'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Programming', 'Systems Thinking', 'Problem Solving', 'Technical Design'],
+      },
+      {
+        name: 'Activities',
+        items: ['Coding', 'Testing', 'Deployment', 'Troubleshooting'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Software Development', 'Data Science', 'Cybersecurity', 'Cloud Computing', 'AI/ML'],
+      },
+      {
+        name: 'Preference',
+        items: ['Tech Environment', 'Innovation', 'Remote Work', 'Agile Teams'],
+      },
+      {
+        name: 'Skills',
+        items: ['Coding', 'System Architecture', 'Database Design', 'Version Control'],
+      },
+      {
+        name: 'Technology',
+        items: ['Programming Languages', 'Frameworks', 'Cloud Platforms', 'Dev Tools'],
+      },
+      {
+        name: 'Traits',
+        items: ['Tech-savvy', 'Problem-solver', 'Continuous Learner', 'Collaborative'],
+      },
+    ],
+  },
+  {
+    name: 'Career Traits',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['Psychologist', 'HR Specialist', 'Personality Assessor', 'Coach'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Assessment', 'Observation', 'Analysis', 'Counseling'],
+      },
+      {
+        name: 'Activities',
+        items: ['Testing', 'Evaluation', 'Counseling', 'Development Planning'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Achievement', 'Independence', 'Recognition', 'Support', 'Working Conditions'],
+      },
+      {
+        name: 'Preference',
+        items: ['People-focused Work', 'Development Role', 'Helping Profession'],
+      },
+      {
+        name: 'Skills',
+        items: ['Personality Assessment', 'Behavioral Analysis', 'Coaching'],
+      },
+      {
+        name: 'Technology',
+        items: ['Assessment Tools', 'Psychometric Software', 'Survey Platforms'],
+      },
+      {
+        name: 'Traits',
+        items: ['Empathetic', 'Observant', 'Non-judgmental', 'Patient'],
+      },
+    ],
+  },
+  {
+    name: 'Career Zone',
+    attributes: [
+      {
+        name: 'Occupations',
+        items: ['Entry-level Worker', 'Skilled Tradesperson', 'Professional', 'Specialist', 'Expert'],
+      },
+      {
+        name: 'Abilities',
+        items: ['Basic Skills', 'Technical Skills', 'Advanced Skills', 'Expert Skills'],
+      },
+      {
+        name: 'Activities',
+        items: ['Basic Tasks', 'Skilled Tasks', 'Complex Tasks', 'Expert Tasks'],
+      },
+      {
+        name: 'Knowledge',
+        items: ['Zone 1: Little/No Prep', 'Zone 2: Some Prep', 'Zone 3: Medium Prep', 'Zone 4: High Prep', 'Zone 5: Extensive Prep'],
+      },
+      {
+        name: 'Preference',
+        items: ['Education Level', 'Training Required', 'Experience Needed'],
+      },
+      {
+        name: 'Skills',
+        items: ['Entry Skills', 'Intermediate Skills', 'Advanced Skills', 'Expert Skills'],
+      },
+      {
+        name: 'Technology',
+        items: ['Basic Tools', 'Standard Software', 'Specialized Software', 'Advanced Systems'],
+      },
+      {
+        name: 'Traits',
+        items: ['Willingness to Learn', 'Commitment', 'Dedication', 'Expertise'],
+      },
+    ],
   },
 ];
 
 export const CareerExplorer: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedCareer, setSelectedCareer] = useState<Career | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [expandedAttribute, setExpandedAttribute] = useState<string | null>(null);
+  const [selectedOccupationAttribute, setSelectedOccupationAttribute] = useState<{ occupation: string; attribute: string } | null>(null);
+    const [isMobile, setIsMobile] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const filteredCareers = careerExamples.filter(
-    (career) =>
-      career.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      career.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    useEffect(() => {
+      const checkMobile = () => {
+        setIsMobile(window.innerWidth < 640);
+      };
+    
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+    
+      return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
-  const categoryCareers = selectedCategory
-    ? filteredCareers.filter((c) => c.category === selectedCategory)
-    : filteredCareers;
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setExpandedCategory(null);
+        setExpandedAttribute(null);
+      }
+    };
+
+    if (expandedCategory) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [expandedCategory]);
+
+
+  const handleCategoryClick = (category: string) => {
+    setExpandedCategory(expandedCategory === category ? null : category);
+    setExpandedAttribute(null); // Reset expanded attribute when changing category
+  };
+
+  const handleAttributeClick = (attributeKey: string) => {
+    setExpandedAttribute(expandedAttribute === attributeKey ? null : attributeKey);
+  };
+
+  const handleViewDetails = (occupationId: string, attribute: string) => {
+    setSelectedOccupationAttribute({ occupation: occupationId, attribute });
+    console.log(`View details for ${occupationId} - ${attribute}`);
+  };
+
+  const handleShowGraph = (occupationId: string, attribute: string) => {
+    console.log(`Show graph for ${occupationId} - ${attribute}`);
+  };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Minimalist Header */}
-      <div className="sticky top-0 z-40 bg-white border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-6 py-8">
-          <h1 className="text-3xl font-light text-gray-900 mb-2">Career Explorer</h1>
-          <p className="text-gray-500 text-sm mb-6">Explore 13 career categories to find your path</p>
-          
-          <div className="relative">
-            <svg className="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              type="text"
-              placeholder="Search careers..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 text-sm"
-            />
-          </div>
-        </div>
+    <div className="w-full max-w-7xl mx-auto">
+            {/* Backdrop overlay for mobile */}
+            {expandedCategory && (
+              <div 
+                className="fixed inset-0 bg-black/20 z-10 lg:hidden"
+                onClick={() => {
+                  setExpandedCategory(null);
+                  setExpandedAttribute(null);
+                }}
+              />
+            )}
+      
+      {/* Modern Header with Gradient */}
+      <div className="mb-8">
+        <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+          Career Explorer
+        </h2>
+        <p className="text-gray-600 text-sm">Discover your perfect career path through comprehensive analysis</p>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-12">
-        {/* Career Categories - Minimalist Grid */}
-        <div className="mb-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {careerCategories.map((category) => (
-              <Link
-                key={category.id}
-                href={`/career/category/${category.id}`}
-                className={`group relative p-4 rounded-2xl border-2 border-transparent shadow-xl transition-all cursor-pointer bg-gradient-to-br ${category.color} hover:scale-105 hover:rotate-[-2deg] hover:shadow-2xl hover:border-[3px] hover:border-indigo-300 before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-br before:from-white/40 before:to-white/10 before:backdrop-blur-md before:z-0`}
-                style={{ overflow: 'hidden' }}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+        {careerCategoriesData.map((category, index) => {
+          // Determine if this is in the last column to adjust dropdown positioning
+          const isLastColumn = (index % 3) === 2;
+          const isMiddleColumn = (index % 3) === 1;
+          
+          return (
+            <div 
+              key={index} 
+              className="relative group" 
+              style={{ zIndex: expandedCategory === category.name ? 30 : 1 }}
+              ref={expandedCategory === category.name ? dropdownRef : null}
+            >
+              <div
+                onClick={() => handleCategoryClick(category.name)}
+                className="relative bg-gradient-to-br from-white to-gray-50 hover:from-purple-50 hover:to-blue-50 border-2 border-gray-200 hover:border-purple-300 px-6 py-5 text-left font-semibold text-gray-800 cursor-pointer transition-all duration-300 rounded-xl shadow-sm hover:shadow-xl flex justify-between items-center transform"
               >
-                <div className="relative z-10 flex flex-col gap-4 items-center justify-center text-white">
-                  <div className="text-5xl mb-2 drop-shadow-xl scale-110 group-hover:scale-125 transition-transform duration-300">{category.icon}</div>
-                  <h3 className="font-extrabold text-lg mb-1 tracking-tight drop-shadow-md text-center group-hover:text-yellow-100 transition-colors duration-300">{category.name}</h3>
-                  <p className="text-xs text-white/90 text-center font-medium drop-shadow-sm group-hover:text-white transition-colors duration-300">{category.description}</p>
-                </div>
-                <span className="absolute -inset-1 rounded-2xl pointer-events-none border-2 border-transparent group-hover:border-[3px] group-hover:border-yellow-300 animate-pulse" />
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Careers List - Minimalist Section */}
-        {selectedCategory && (
-          <div className="mb-12">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-2xl font-light text-gray-900">
-                  {careerCategories.find((c) => c.id === selectedCategory)?.name}
-                </h2>
-                <p className="text-xs text-gray-500 mt-2">{categoryCareers.length} career{categoryCareers.length !== 1 ? 's' : ''}</p>
+                <span className="text-base bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text group-hover:from-purple-600 group-hover:to-blue-600 transition-all duration-300">
+                  {category.name}
+                </span>
+                <span className="text-sm bg-purple-100 text-purple-600 px-2.5 py-1 rounded-full transition-transform duration-300">
+                  {expandedCategory === category.name ? '▲' : '▼'}
+                </span>
               </div>
-              <button
-                onClick={() => {
-                  setSelectedCategory(null);
-                  setSelectedCareer(null);
-                }}
-                className="text-xs px-3 py-1.5 text-gray-600 hover:text-gray-900 border border-gray-300 hover:border-gray-400 rounded transition"
-              >
-                Clear
-              </button>
-            </div>
-
-            <div className="space-y-3">
-              {categoryCareers.length > 0 ? (
-                categoryCareers.map((career) => (
-                  <button
-                    key={career.id}
-                    onClick={() => setSelectedCareer(career)}
-                    className={`w-full text-left p-4 rounded-lg border transition-all ${
-                      selectedCareer?.id === career.id
-                        ? 'bg-gray-50 border-gray-300'
-                        : 'bg-white border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h4 className="font-medium text-gray-900 text-sm">{career.title}</h4>
-                        <p className="text-xs text-gray-500 mt-1">{career.description}</p>
-                        <div className="flex gap-4 mt-2 text-xs">
-                          <span className="text-gray-600">{career.salary}</span>
-                          <span className="text-gray-600">{career.growth}</span>
-                        </div>
+              
+              {/* Modern Dropdown Content */}
+              {expandedCategory === category.name && (
+                <div 
+                  className="absolute z-50 mt-3 left-0 right-0 sm:left-auto sm:right-auto sm:w-auto w-full sm:min-w-[360px] sm:max-w-[420px] bg-white border-2 border-purple-200 rounded-2xl shadow-2xl overflow-hidden animate-fadeIn"
+                  style={{
+                    ...(!isMobile && {
+                      left: isLastColumn ? 'auto' : isMiddleColumn ? '50%' : '0',
+                      right: isLastColumn ? '0' : 'auto',
+                      transform: isMiddleColumn ? 'translateX(-50%)' : 'none'
+                    })
+                  }}
+                >
+                  <div className="sticky top-0 bg-white px-5 pt-5 pb-3 mb-2 border-b-2 border-purple-100 z-10">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h4 className="font-bold text-gray-900 text-lg bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                          {category.name}
+                        </h4>
+                        <p className="text-xs text-gray-500 mt-1">Click to expand and explore details</p>
                       </div>
-                      <span className="ml-2 text-gray-400">{selectedCareer?.id === career.id ? '▼' : '▶'}</span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setExpandedCategory(null);
+                          setExpandedAttribute(null);
+                        }}
+                        className="text-gray-400 hover:text-gray-600 transition-colors ml-2"
+                        aria-label="Close"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
                     </div>
-                  </button>
-                ))
-              ) : (
-                <div className="p-8 text-center">
-                  <p className="text-sm text-gray-500">No careers found</p>
+                  </div>
+                  <div className="space-y-3 px-5 pb-5 max-h-[500px] overflow-y-auto dropdown-scroll">
+                    {category.attributes.map((attribute, attrIdx) => {
+                      const attributeKey = `${category.name}-${attribute.name}`;
+                      const isExpanded = expandedAttribute === attributeKey;
+                      
+                      return (
+                        <div key={attrIdx} className="bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-purple-300 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-md">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAttributeClick(attributeKey);
+                            }}
+                            className="w-full px-4 py-3 font-semibold text-sm text-gray-800 hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50 transition-all duration-300 flex justify-between items-center group"
+                          >
+                            <span className="flex items-center gap-2">
+                              <span className="w-2 h-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></span>
+                              {attribute.name}
+                            </span>
+                            <span className={`text-xs transition-all duration-300 ${isExpanded ? 'rotate-180' : ''} transform`}>
+                              <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </span>
+                          </button>
+                          
+                          {isExpanded && (
+                            <ul className="space-y-2 px-4 pb-4 pt-2 bg-white border-t border-gray-100">
+                              {attribute.items.map((item, itemIdx) => (
+                                <li 
+                                  key={itemIdx} 
+                                  className="text-sm text-gray-700 hover:text-purple-600 cursor-pointer py-2 px-3 hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50 rounded-lg transition-all duration-200 flex items-center gap-2 group"
+                                >
+                                  <span className="w-1.5 h-1.5 bg-purple-500 rounded-full group-hover:scale-150 transition-transform duration-200"></span>
+                                  <span className="group-hover:translate-x-1 transition-transform duration-200">{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
             </div>
-          </div>
-        )}
-
-        {/* Career Details - Clean Panel */}
-        {selectedCareer && (
-          <div className="bg-white border border-gray-200 rounded-lg p-8 space-y-6">
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="text-2xl font-light text-gray-900">{selectedCareer.title}</h3>
-                <p className="text-sm text-gray-500 mt-2">{selectedCareer.description}</p>
-              </div>
-              <button
-                onClick={() => setSelectedCareer(null)}
-                className="text-gray-400 hover:text-gray-600 text-lg"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 pt-4 border-t border-gray-100">
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">Salary</p>
-                <p className="font-medium text-gray-900 text-sm">{selectedCareer.salary}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">Growth</p>
-                <p className="font-medium text-gray-900 text-sm">{selectedCareer.growth}</p>
-              </div>
-              <div className="md:col-span-2">
-                <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">Education</p>
-                <p className="font-medium text-gray-900 text-sm">{selectedCareer.education}</p>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-gray-100">
-              <p className="text-xs text-gray-500 uppercase tracking-wide mb-3">Key Skills</p>
-              <div className="flex flex-wrap gap-2">
-                {selectedCareer.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-xs font-medium"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="pt-4">
-              <button className="w-full py-2.5 text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 rounded transition">
-                Learn More
-              </button>
-            </div>
-          </div>
-        )}
+          );
+        })}
       </div>
     </div>
   );
