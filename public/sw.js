@@ -1,19 +1,9 @@
 const CACHE_NAME = 'zuugnu-v1';
 const RUNTIME_CACHE = 'zuugnu-runtime';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/offline.html',
-  '/favicon.ico',
-  '/globals.css'
-];
 
-// Install event - cache essential assets
+// Install event - skip pre-caching to avoid errors
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
+  console.log('Service Worker installing...');
   self.skipWaiting();
 });
 

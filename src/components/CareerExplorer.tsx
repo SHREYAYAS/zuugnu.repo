@@ -9,13 +9,6 @@ interface Occupation {
   name: string;
 }
 
-const sampleOccupations: Occupation[] = [
-  {
-    id: '1',
-    name: 'Web Designer',
-  },
-];
-
 interface AttributeOption {
   name: string;
   items: string[];
@@ -554,6 +547,62 @@ export const CareerExplorer: React.FC = () => {
     const [isMobile, setIsMobile] = useState(false);
   const [bottomOpenAttribute, setBottomOpenAttribute] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [bottomPage, setBottomPage] = useState(1);
+  const [bottomPageSize, setBottomPageSize] = useState(9);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [query, setQuery] = useState('');
+
+  const occupations: Occupation[] = React.useMemo(() => {
+    const all = careerCategoriesData
+      .flatMap(cat => cat.attributes)
+      .filter(attr => attr.name === 'Occupations')
+      .flatMap(attr => attr.items);
+    const base = Array.from(new Set(all));
+    const target = 120; // expand for richer pagination demo
+    const result: Occupation[] = [];
+    let idCounter = 1;
+    // push base set first
+    for (const name of base) {
+      result.push({ id: String(idCounter++), name });
+    }
+    // repeat with suffixes until reaching target size
+    let repeat = 2;
+    while (result.length < target && base.length > 0) {
+      for (const name of base) {
+        if (result.length >= target) break;
+        result.push({ id: String(idCounter++), name: `${name} (${repeat})` });
+      }
+      repeat++;
+    }
+    return result;
+  }, []);
+
+  const filteredOccupations = React.useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return occupations;
+    return occupations.filter(o => o.name.toLowerCase().includes(q));
+  }, [occupations, query]);
+
+  const totalItems = filteredOccupations.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+  const startIndex = Math.min((page - 1) * pageSize, Math.max(0, totalItems - 1));
+  const endIndex = Math.min(startIndex + pageSize, totalItems);
+  const pagedOccupations = filteredOccupations.slice(startIndex, endIndex);
+
+  const visiblePages = React.useMemo(() => {
+    const pages: number[] = [];
+    const maxVisible = 5;
+    let start = Math.max(1, page - 2);
+    let end = Math.min(totalPages, start + maxVisible - 1);
+    start = Math.max(1, end - maxVisible + 1);
+    for (let p = start; p <= end; p++) pages.push(p);
+    return pages;
+  }, [page, totalPages]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [query, pageSize]);
 
     useEffect(() => {
       const checkMobile = () => {
@@ -613,6 +662,26 @@ export const CareerExplorer: React.FC = () => {
     return found?.items ?? [];
   }, [bottomOpenAttribute]);
 
+  const bottomTotal = bottomItems.length;
+  const bottomTotalPages = Math.max(1, Math.ceil(bottomTotal / bottomPageSize));
+  const bottomStartIndex = Math.min((bottomPage - 1) * bottomPageSize, Math.max(0, bottomTotal - 1));
+  const bottomEndIndex = Math.min(bottomStartIndex + bottomPageSize, bottomTotal);
+  const bottomPagedItems = bottomItems.slice(bottomStartIndex, bottomEndIndex);
+
+  const bottomVisiblePages = React.useMemo(() => {
+    const pages: number[] = [];
+    const maxVisible = 5;
+    let start = Math.max(1, bottomPage - 2);
+    let end = Math.min(bottomTotalPages, start + maxVisible - 1);
+    start = Math.max(1, end - maxVisible + 1);
+    for (let p = start; p <= end; p++) pages.push(p);
+    return pages;
+  }, [bottomPage, bottomTotalPages]);
+
+  useEffect(() => {
+    setBottomPage(1);
+  }, [bottomOpenAttribute, bottomPageSize]);
+
   return (
     <div className="w-full max-w-7xl mx-auto">
             {/* Backdrop overlay for mobile */}
@@ -634,7 +703,7 @@ export const CareerExplorer: React.FC = () => {
         <p className="text-gray-600 text-sm">Discover your perfect career path through comprehensive analysis</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         {careerCategoriesData.map((category, index) => {
           // Determine if this is in the last column to adjust dropdown positioning
           const isLastColumn = (index % 3) === 2;
@@ -649,15 +718,15 @@ export const CareerExplorer: React.FC = () => {
             >
               <div
                 onClick={() => handleCategoryClick(category.name)}
-                className="relative bg-gradient-to-br from-white to-gray-50 hover:from-purple-50 hover:to-blue-50 border-2 border-gray-200 hover:border-purple-300 px-6 py-5 text-left font-semibold text-gray-800 cursor-pointer transition-all duration-300 rounded-xl shadow-sm hover:shadow-xl flex justify-between items-center transform"
+                className="relative bg-gradient-to-br from-white to-gray-50 hover:from-purple-50 hover:to-blue-50 border-2 border-gray-200 hover:border-purple-300 px-8 py-7 text-left font-semibold text-gray-800 cursor-pointer transition-all duration-300 rounded-2xl shadow-md hover:shadow-xl flex justify-between items-center transform min-h-[92px]"
               >
-                <span className="text-base bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text group-hover:from-purple-600 group-hover:to-blue-600 transition-all duration-300">
-                  <span className="inline-flex items-center gap-2">
-                    <Icon name={category.name} size={18} className="text-purple-600 shrink-0" />
-                    {category.name}
+                <span className="text-lg bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text group-hover:from-purple-600 group-hover:to-blue-600 transition-all duration-300 max-w-[70%]">
+                  <span className="inline-flex items-center gap-3">
+                    <Icon name={category.name} size={20} className="text-purple-600 shrink-0" />
+                    <span className="whitespace-nowrap overflow-hidden text-ellipsis" title={category.name}>{category.name}</span>
                   </span>
                 </span>
-                <span className="text-sm bg-purple-100 text-purple-600 px-2.5 py-1 rounded-full transition-transform duration-300">
+                <span className="text-sm bg-purple-100 text-purple-600 px-2.5 py-1 rounded-full transition-transform duration-300 flex items-center gap-1">
                   {expandedCategory === category.name ? '▲' : '▼'}
                 </span>
               </div>
@@ -713,7 +782,7 @@ export const CareerExplorer: React.FC = () => {
                           >
                             <span className="flex items-center gap-2">
                               <Icon name={attribute.name} size={16} className="text-purple-600 shrink-0" />
-                              {attribute.name}
+                              <span className="whitespace-nowrap overflow-hidden text-ellipsis" title={attribute.name}>{attribute.name}</span>
                             </span>
                             <span className={`text-xs transition-all duration-300 ${isExpanded ? 'rotate-180' : ''} transform`}>
                               <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -728,9 +797,14 @@ export const CareerExplorer: React.FC = () => {
                                 <li 
                                   key={itemIdx} 
                                   className="text-sm text-gray-700 hover:text-purple-600 cursor-pointer py-2 px-3 hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50 rounded-lg transition-all duration-200 flex items-center gap-2 group"
+                                  title={item}
                                 >
-                                  <Icon name={attribute.name} size={12} className="text-purple-500 shrink-0" />
-                                  <span className="group-hover:translate-x-1 transition-transform duration-200">{item}</span>
+                                  {itemIdx === 0 ? (
+                                    <Icon name={attribute.name} size={12} className="text-purple-500 shrink-0" />
+                                  ) : (
+                                    <span className="w-3 shrink-0" aria-hidden="true" />
+                                  )}
+                                  <span className="group-hover:translate-x-1 transition-transform duration-200 whitespace-nowrap overflow-hidden text-ellipsis">{item}</span>
                                 </li>
                               ))}
                             </ul>
@@ -748,61 +822,148 @@ export const CareerExplorer: React.FC = () => {
 
       {/* Bottom Summary Table */}
       <div className="mt-8">
-        <h3 className="text-2xl font-semibold text-gray-800 mb-4">Career Explorer</h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-full border-2 border-gray-200 rounded-xl overflow-hidden">
-            <thead>
-              <tr className="bg-gray-50 text-gray-800">
-                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Occupations" size={14} className="text-purple-600 shrink-0" />Occupations</span></th>
-                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Abilities" size={14} className="text-purple-600 shrink-0" />Abilities</span></th>
-                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Activities" size={14} className="text-purple-600 shrink-0" />Activities</span></th>
-                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Knowledge" size={14} className="text-purple-600 shrink-0" />Knowledge</span></th>
-                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Preference" size={14} className="text-purple-600 shrink-0" />Preference</span></th>
-                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Skills" size={14} className="text-purple-600 shrink-0" />Skills</span></th>
-                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Technology" size={14} className="text-purple-600 shrink-0" />Technology</span></th>
-                <th className="px-4 py-3 text-left border border-gray-200"><span className="inline-flex items-center gap-2"><Icon name="Traits" size={14} className="text-purple-600 shrink-0" />Traits</span></th>
+        <h3 className="text-2xl font-semibold text-gray-800 mb-5">Career Summary</h3>
+        <div className="mb-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="relative w-full sm:max-w-xs">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search occupations..."
+              className="w-full rounded-full border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent pr-9"
+              aria-label="Search occupations"
+            />
+            <svg className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <span>Rows per page:</span>
+            <select
+              value={pageSize}
+              onChange={(e) => setPageSize(parseInt(e.target.value, 10))}
+              className="border border-gray-300 rounded-full px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              aria-label="Rows per page"
+            >
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>
+          </div>
+        </div>
+        <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-sm bg-white">
+          <table className="min-w-full text-sm">
+            <caption className="sr-only">Career summary table</caption>
+            <thead className="bg-gray-50 sticky top-0 z-0">
+              <tr className="text-gray-800">
+                <th className="px-5 py-3 text-left border-b border-gray-200 font-semibold"><span className="inline-flex items-center gap-2"><Icon name="Occupations" size={14} className="text-purple-600 shrink-0" /><span className="whitespace-nowrap">Occupations</span></span></th>
+                {['Abilities','Activities','Knowledge','Preference','Skills','Technology','Traits'].map((h) => (
+                  <th key={h} className="px-5 py-3 text-left border-b border-gray-200 font-semibold">
+                    <span className="inline-flex items-center gap-2"><Icon name={h} size={14} className="text-purple-600 shrink-0" /><span className="whitespace-nowrap">{h}</span></span>
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {sampleOccupations.map((occ) => (
-                <tr key={occ.id} className="bg-white">
-                  <td className="px-4 py-3 border border-gray-200 font-medium text-gray-900">
-                    {occ.name}
+              {pagedOccupations.map((occ) => (
+                <tr key={occ.id} className="odd:bg-white even:bg-gray-50 hover:bg-purple-50/50 transition-colors">
+                  <td className="px-5 py-3 border-b border-gray-100">
+                    <div className="inline-flex items-center gap-2 max-w-[220px]">
+                      <Icon name="Occupations" size={16} className="text-purple-600 shrink-0" />
+                      <span className="font-medium text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis" title={occ.name}>{occ.name}</span>
+                    </div>
                   </td>
-                  {/* Abilities with Graph action */}
-                  <td className="px-4 py-3 border border-gray-200">
+                  <td className="px-5 py-3 border-b border-gray-100">
                     <button
-                      className="text-purple-600 hover:text-purple-800 font-semibold"
+                      className="inline-flex items-center gap-2 text-purple-700 hover:text-purple-900 bg-purple-100/70 hover:bg-purple-200 px-3 py-1.5 rounded-full font-semibold transition-colors"
                       onClick={() => { handleShowGraph(occ.name, 'Abilities'); openBottomOptions('Abilities'); }}
                       onMouseEnter={() => openBottomOptions('Abilities')}
                     >
-                      {'>>'} Graph
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 17h3v-7H3v7zm5 0h3V7H8v10zm5 0h3V10h-3v7zm5 0h3V4h-3v13z" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      Graph
                     </button>
                   </td>
-                  {/* Other attributes with view details */}
                   {['Activities','Knowledge','Preference','Skills','Technology','Traits'].map((attr) => (
-                    <td key={`${occ.id}-${attr}`} className="px-4 py-3 border border-gray-200">
+                    <td key={`${occ.id}-${attr}`} className="px-5 py-3 border-b border-gray-100">
                       <button
-                        className="text-purple-600 hover:text-purple-800 font-semibold"
+                        className="inline-flex items-center gap-1.5 text-indigo-700 hover:text-indigo-900 bg-indigo-100/70 hover:bg-indigo-200 px-2.5 py-1.5 rounded-full font-semibold transition-colors"
                         onClick={() => { handleViewDetails(occ.name, attr); openBottomOptions(attr); }}
                         onMouseEnter={() => openBottomOptions(attr)}
+                        title={`View ${attr}`}
                       >
-                        {'>>'}
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        <span className="hidden sm:inline">Open</span>
                       </button>
                     </td>
                   ))}
                 </tr>
               ))}
             </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={8} className="px-5 py-4 bg-white border-t border-gray-200">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <p className="text-gray-600 text-sm">Showing <span className="font-semibold text-gray-900">{startIndex + 1}</span> to <span className="font-semibold text-gray-900">{endIndex}</span> of <span className="font-semibold text-gray-900">{totalItems}</span> entries</p>
+                    <div className="flex items-center gap-1">
+                      <button
+                        className="px-3 py-1.5 text-xs font-semibold rounded-full border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+                        onClick={() => setPage((p) => Math.max(1, p - 1))}
+                        disabled={page === 1}
+                      >
+                        Previous
+                      </button>
+                      <button
+                        className="px-2 py-1.5 text-xs font-semibold rounded-full border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+                        onClick={() => setPage(1)}
+                        disabled={page === 1}
+                        aria-label="First page"
+                      >
+                        «
+                      </button>
+                      {visiblePages.length > 0 && visiblePages[0] > 2 && (
+                        <span className="px-2 text-gray-400">…</span>
+                      )}
+                      {visiblePages.map((p) => (
+                        <button
+                          key={p}
+                          onClick={() => setPage(p)}
+                          className={`${p === page ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 hover:bg-gray-100 border-gray-200'} px-3 py-1.5 text-xs font-semibold rounded-full border`}
+                          aria-current={p === page ? 'page' : undefined}
+                        >
+                          {p}
+                        </button>
+                      ))}
+                      {visiblePages.length > 0 && visiblePages[visiblePages.length - 1] < totalPages - 1 && (
+                        <span className="px-2 text-gray-400">…</span>
+                      )}
+                      <button
+                        className="px-2 py-1.5 text-xs font-semibold rounded-full border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+                        onClick={() => setPage(totalPages)}
+                        disabled={page === totalPages}
+                        aria-label="Last page"
+                      >
+                        »
+                      </button>
+                      <button
+                        className="px-3 py-1.5 text-xs font-semibold rounded-full border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+                        onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                        disabled={page === totalPages}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
           </table>
         </div>
         {/* Bottom options panel */}
         {bottomOpenAttribute && (
-          <div className="mt-4 bg-white border-2 border-purple-200 rounded-xl shadow-md p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h4 className="font-semibold text-gray-800">{bottomOpenAttribute} Options</h4>
+          <div className="mt-5 bg-white border border-purple-200 rounded-2xl shadow-sm p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="font-semibold text-gray-900 text-base"><span className="inline-flex items-center gap-2"><Icon name={bottomOpenAttribute} size={16} className="text-purple-600" />{bottomOpenAttribute} Options</span></h4>
               <button
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 p-1 rounded"
                 onClick={() => setBottomOpenAttribute(null)}
                 aria-label="Close options"
               >
@@ -812,14 +973,81 @@ export const CareerExplorer: React.FC = () => {
               </button>
             </div>
             {bottomItems.length > 0 ? (
-              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                {bottomItems.map((it, idx) => (
-                  <li key={idx} className="text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 flex items-center gap-2">
+              <>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                {bottomPagedItems.map((it, idx) => (
+                  <li key={`${it}-${idx}`} className="text-sm text-gray-800 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 flex items-center gap-2 hover:bg-purple-50/50">
                     <Icon name={bottomOpenAttribute} size={14} className="text-purple-600 shrink-0" />
-                    {it}
+                    <span className="whitespace-nowrap overflow-hidden text-ellipsis" title={it}>{it}</span>
                   </li>
                 ))}
               </ul>
+              <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <p className="text-gray-600 text-xs">Showing <span className="font-semibold text-gray-900">{bottomStartIndex + 1}</span> to <span className="font-semibold text-gray-900">{bottomEndIndex}</span> of <span className="font-semibold text-gray-900">{bottomTotal}</span> entries</p>
+                <div className="flex items-center gap-2 text-xs">
+                  <span>Rows:</span>
+                  <select
+                    value={bottomPageSize}
+                    onChange={(e) => setBottomPageSize(parseInt(e.target.value, 10))}
+                    className="border border-gray-300 rounded-full px-2.5 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    aria-label="Rows per page"
+                  >
+                    <option value={6}>6</option>
+                    <option value={9}>9</option>
+                    <option value={12}>12</option>
+                    <option value={18}>18</option>
+                  </select>
+                  <div className="flex items-center gap-1">
+                    <button
+                      className="px-2.5 py-1.5 font-semibold rounded-full border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+                      onClick={() => setBottomPage((p) => Math.max(1, p - 1))}
+                      disabled={bottomPage === 1}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      className="px-2 py-1.5 font-semibold rounded-full border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+                      onClick={() => setBottomPage(1)}
+                      disabled={bottomPage === 1}
+                      aria-label="First page"
+                    >
+                      «
+                    </button>
+                    {bottomVisiblePages.length > 0 && bottomVisiblePages[0] > 2 && (
+                      <span className="px-2 text-gray-400">…</span>
+                    )}
+                    {bottomVisiblePages.map((p) => (
+                      <button
+                        key={p}
+                        onClick={() => setBottomPage(p)}
+                        className={`${p === bottomPage ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 hover:bg-gray-100 border-gray-200'} px-2.5 py-1.5 font-semibold rounded-full border`}
+                        aria-current={p === bottomPage ? 'page' : undefined}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                    {bottomVisiblePages.length > 0 && bottomVisiblePages[bottomVisiblePages.length - 1] < bottomTotalPages - 1 && (
+                      <span className="px-2 text-gray-400">…</span>
+                    )}
+                    <button
+                      className="px-2 py-1.5 font-semibold rounded-full border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+                      onClick={() => setBottomPage(bottomTotalPages)}
+                      disabled={bottomPage === bottomTotalPages}
+                      aria-label="Last page"
+                    >
+                      »
+                    </button>
+                    <button
+                      className="px-2.5 py-1.5 font-semibold rounded-full border border-gray-200 bg-white text-gray-700 hover:bg-gray-100 disabled:opacity-50"
+                      onClick={() => setBottomPage((p) => Math.min(bottomTotalPages, p + 1))}
+                      disabled={bottomPage === bottomTotalPages}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+              </>
             ) : (
               <p className="text-sm text-gray-500">No options available.</p>
             )}
